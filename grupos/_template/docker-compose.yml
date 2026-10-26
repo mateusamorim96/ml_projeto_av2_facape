@@ -1,0 +1,15 @@
+# Comando único alternativo: `docker compose run --rm pipeline`
+services:
+  pipeline:
+    build: .
+    image: grupo-XX:local
+    environment:
+      SEED: "42"
+      PYTHONHASHSEED: "42"
+      MPLBACKEND: "Agg"
+    volumes:
+      # dados brutos ficam fora da imagem (não versionados)
+      - ./data/raw:/app/data/raw:ro
+      - ./reports:/app/reports
+      - ./experiments:/app/experiments
+    command: ["python", "-m", "src.pipeline", "--config", "configs/base.yaml"]

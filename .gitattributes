@@ -1,0 +1,18 @@
+# Normaliza fim de linha (evita diff fantasma entre Windows e Linux)
+* text=auto eol=lf
+
+# Binários: nunca tratar como texto
+*.pdf  binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.pkl  binary
+*.joblib binary
+
+# Notebooks: evita conflito em metadados e saída de célula
+*.ipynb diff=jupyternotebook
+*.ipynb merge=jupyternotebook
+
+# Linguagem dos arquivos no GitHub
+*.ipynb linguist-detectable=true

@@ -1,0 +1,64 @@
+# Configuração base do pipeline — GXX
+# Todos os caminhos são relativos à raiz da pasta do grupo.
+
+project:
+  grupo: GXX
+  nome: preencher-tema
+  ods: preencher            # ex.: 6
+  meta: preencher           # ex.: "6.1"
+  seed: 42
+
+dados:
+  raw: data/raw/            # ignorado pelo Git
+  processed: data/processed/
+  arquivo: preencher.csv    # nome do arquivo baixado
+  alvo: preencher
+  coluna_tempo: null        # preencha se houver ordem temporal
+  proporcao_teste: 0.2
+  estratificar: true
+
+preprocessamento:
+  # decisões que precisam de justificativa em docs/decisoes-tecnicas.md
+  imputacao_numerica: mediana      # mediana | media | constante
+  imputacao_categorica: moda
+  escalonamento: standard          # standard | minmax | none
+  one_hot_min_frequency: 5
+
+validacao:
+  esquema: stratified-k-fold       # stratified-k-fold | k-fold | time-series | group
+  n_splits: 5
+  n_repeats: 10
+  metrica_principal: preencher     # f1 | roc_auc | average_precision | rmse | mae
+  metrica_secundaria: null
+
+modelos:
+  baseline:
+    tipo: dummy                    # dummy | logistic | decision-tree
+    parametros: {}
+  familia_1:
+    tipo: preencher
+    parametros:
+      preencher: null
+  familia_2:
+    tipo: preencher
+    parametros: {}
+  familia_3:
+    tipo: preencher
+    parametros: {}
+
+busca:
+  metodo: grid                     # grid | random
+  n_iter: 30
+  cv_interna: 3
+  scoring: preencher
+
+saidas:
+  tabelas: reports/tables/
+  figuras: reports/figures/
+  ambiente: reports/environment.json
+  runs: experiments/runs.csv
+
+teste_estatistico:
+  metodo: preencher                # wilcoxon | mcnemar | friedman-nemenyi
+  alpha: 0.05
+  correcao: preencher              # bonferroni | holm | none

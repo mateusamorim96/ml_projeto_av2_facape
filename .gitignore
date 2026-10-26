@@ -1,0 +1,92 @@
+# ============================================================
+# Projeto AV2 de Machine Learning — .gitignore raiz (modelo)
+# Cada grupo pode ter o seu, mas estas regras valem para todos.
+# ============================================================
+
+# ---------- Dados (nunca versionar brutos / pessoais) ----------
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+data/interim/*
+!data/interim/.gitkeep
+*.parquet
+*.feather
+*.h5
+*.hdf5
+*.sqlite
+*.db
+*.zip
+*.7z
+*.rar
+*.gz
+!*.tar.gz
+
+# ---------- Segredos e credenciais ----------
+.env
+.env.*
+!.env.example
+credentials.json
+client_secret*.json
+token*.json
+secrets.yaml
+secrets.yml
+*.pem
+*.key
+kaggle.json
+.dvc/config.local
+
+# ---------- Python ----------
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+.eggs/
+*.egg-info/
+build/
+dist/
+.ipynb_checkpoints/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# ---------- MLflow / experimentos locais ----------
+mlruns/
+mlartifacts/
+wandb/
+lightning_logs/
+*.ckpt
+models/*.pkl
+models/*.joblib
+models/*.onnx
+models/*.pt
+models/*.h5
+
+# ---------- LaTeX (artigo) ----------
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+*.nav
+*.snm
+*.vrb
+!slides/*.pdf
+
+# ---------- Editores e sistema ----------
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+Thumbs.db
+desktop.ini
+~$*

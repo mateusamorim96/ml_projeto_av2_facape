@@ -1,0 +1,29 @@
+# Regras locais do grupo GXX (complementam o .gitignore da raiz)
+
+# dados e artefatos gerados
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+reports/environment.json
+
+# modelos serializados
+*.pkl
+*.joblib
+*.onnx
+*.pt
+*.h5
+
+# experimentos locais
+mlruns/
+notebooks/.ipynb_checkpoints/
+
+# LaTeX do artigo
+article/*.aux
+article/*.bbl
+article/*.blg
+article/*.log
+article/*.out
+article/*.toc
+article/*.fls
+article/*.fdb_latexmk

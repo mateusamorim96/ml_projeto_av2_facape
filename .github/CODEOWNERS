@@ -1,0 +1,14 @@
+# Arquivos de governança e infraestrutura são do professor.
+# Cada grupo manda apenas em grupos/grupo-NN-*/ (sem owner fixo: a CI valida o escopo).
+
+/README.md            @mateusamorim96
+/CONTRIBUTING.md      @mateusamorim96
+/LICENSE              @mateusamorim96
+/.gitignore           @mateusamorim96
+/.gitattributes       @mateusamorim96
+/.githooks/           @mateusamorim96
+/.github/             @mateusamorim96
+/scripts/             @mateusamorim96
+/docs/                @mateusamorim96
+/grupos/README.md     @mateusamorim96
+/grupos/_template/    @mateusamorim96

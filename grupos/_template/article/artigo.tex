@@ -1,0 +1,68 @@
+% ============================================================
+% Artigo do Projeto AV2 — GXX (preencher)
+% Compilar: latexmk -pdf artigo.tex
+% Regra: tabelas e figuras entram por \input{} / \includegraphics{}
+%        do que os scripts geraram. Nunca digite números à mão.
+% ============================================================
+\documentclass[11pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[brazil]{babel}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{siunitx}
+\usepackage{hyperref}
+\usepackage[margin=2.5cm]{geometry}
+
+\title{preencher: título do artigo (ODS + decisão)}
+\author{GXX --- preencher integrantes \\ Machine Learning --- FACAPE 2026.2}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+% 120-180 palavras: problema, dados, método, resultado com número, decisão.
+preencher.
+\end{abstract}
+
+\section{Introdução}
+% ODS + meta numerada; problema local; pergunta; decisão; contribuição.
+preencher.
+
+\section{Métodos}
+\subsection{Dados}
+% fonte, licença, recorte, volume, alvo, limpeza, LGPD.
+preencher.
+
+\subsection{Preparação e validação}
+% pipeline, split, CV repetida, ausência de vazamento.
+preencher.
+
+\subsection{Modelos e protocolo estatístico}
+% baseline + 3 famílias; folds idênticos; teste escolhido; efeito e IC.
+preencher.
+
+\section{Resultados}
+% \input{../reports/tables/tabela-comparativa.tex}
+% \includegraphics[width=\linewidth]{../reports/figures/figura-comparacao.png}
+preencher.
+
+\section{Discussão}
+% o que o modelo erra, por subgrupo, interpretação, ameaças à validade.
+preencher.
+
+\section{Conclusão}
+% resposta à pergunta, decisão recomendada, limitações, trabalho futuro.
+preencher.
+
+\section*{Disponibilidade}
+Código, dados (link/hash) e instruções: preencher (URL do repositório, tag
+\texttt{v1.0-entrega}, comando \texttt{docker run}).
+
+\bibliographystyle{plain}
+\bibliography{referencias}
+
+\end{document}

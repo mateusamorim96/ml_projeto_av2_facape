@@ -1,0 +1,118 @@
+#!/usr/bin/env bash
+# ============================================================
+# Hook pre-commit — Projeto AV2 de Machine Learning
+#
+# Ativação (uma vez por clone):
+#     git config core.hooksPath .githooks
+# Desativação:  git config --unset core.hooksPath
+#
+# Bloqueia:
+#   1. arquivo staged fora de grupos/grupo-NN-*/
+#   2. arquivo maior que 20 MB
+#   3. dados brutos (data/raw/) e arquivos de dados versionados
+#   4. credenciais e segredos por nome de arquivo
+#   5. mensagem de commit fora do padrão [GNN] tipo: descricao
+# ============================================================
+set -uo pipefail
+
+LIMITE_MB=20
+FALHAS=0
+
+erro() { printf '\033[31m[hook] ERRO:\033[0m %s\n' "$1"; FALHAS=$((FALHAS + 1)); }
+ok()   { printf '\033[32m[hook] ok:\033[0m %s\n' "$1"; }
+
+# ---------- 1. Descobrir o grupo ----------
+BRANCH=$(git symbolic-ref --short HEAD 2>/dev/null || git rev-parse --abbrev-ref HEAD 2>/dev/null || echo "")
+GRUPO=""
+if [[ "$BRANCH" =~ ^grupo-([0-9]{2}) ]]; then
+  GRUPO="grupo-${BASH_REMATCH[1]}"
+fi
+
+ARQUIVOS=$(git diff --cached --name-only --diff-filter=ACMR)
+
+if [ -z "$ARQUIVOS" ]; then
+  ok "nada para verificar"
+  exit 0
+fi
+
+# Branch principal = manutenção do professor: escopo e padrão de commit não se aplicam.
+SO_MANUTENCAO=0
+if [ "$BRANCH" = "main" ] || [ "$BRANCH" = "master" ]; then
+  SO_MANUTENCAO=1
+  ok "branch principal: checagens de escopo e de commit ignoradas"
+fi
+
+# Se a branch não identifica o grupo, tenta inferir pelos arquivos staged.
+if [ -z "$GRUPO" ] && [ "$SO_MANUTENCAO" -eq 0 ]; then
+  GRUPO=$(printf '%s\n' "$ARQUIVOS" | grep -oE '^grupos/grupo-[0-9]{2}-' | head -1 | sed -E 's#^grupos/##' || true)
+  GRUPO="${GRUPO%-}"
+fi
+
+if [ "$SO_MANUTENCAO" -eq 0 ]; then
+  if [ -z "$GRUPO" ]; then
+    erro "não consegui identificar o grupo. Use branch 'grupo-NN/descricao' ou commite apenas arquivos em grupos/grupo-NN-*/"
+  else
+    ok "grupo detectado: $GRUPO"
+  fi
+fi
+
+# ---------- 2. Escopo ----------
+if [ "$SO_MANUTENCAO" -eq 0 ]; then
+  PREFIXO_GRUPO="grupos/${GRUPO}"
+  PREFIXO_GRUPO="${PREFIXO_GRUPO%-}"
+  while IFS= read -r ARQ; do
+    [ -z "$ARQ" ] && continue
+    if [ -n "$GRUPO" ] && [[ "$ARQ" != ${PREFIXO_GRUPO}* ]]; then
+      erro "fora do escopo do grupo: $ARQ (permitido apenas $PREFIXO_GRUPO*/)"
+    fi
+  done <<< "$ARQUIVOS"
+fi
+
+# ---------- 3. Tamanho ----------
+while IFS= read -r ARQ; do
+  [ -z "$ARQ" ] && continue
+  [ -f "$ARQ" ] || continue
+  BYTES=$(wc -c < "$ARQ")
+  if [ "$BYTES" -gt $((LIMITE_MB * 1024 * 1024)) ]; then
+    erro "arquivo maior que ${LIMITE_MB} MB: $ARQ ($(numfmt --to=iec "$BYTES" 2>/dev/null || echo "$BYTES"B))"
+  fi
+done <<< "$ARQUIVOS"
+
+# ---------- 4. Dados e segredos ----------
+while IFS= read -r ARQ; do
+  [ -z "$ARQ" ] && continue
+  case "$ARQ" in
+    */.gitkeep) continue ;;
+    data/raw/*|*/data/raw/*|data/interim/*|*/data/interim/*|data/processed/*|*/data/processed/*)
+      erro "dado versionado (não versione data/): $ARQ" ;;
+    *.parquet|*.feather|*.h5|*.hdf5|*.sqlite|*.db|*.zip|*.7z|*.rar)
+      erro "arquivo de dados/binário não permitido: $ARQ" ;;
+    .env|*/.env|credentials.json|*/credentials.json|token*.json|*/token*.json|kaggle.json|*/kaggle.json|*.pem|*.key|secrets.y*ml|*/secrets.y*ml)
+      erro "credencial/segredo: $ARQ" ;;
+  esac
+done <<< "$ARQUIVOS"
+
+# ---------- 5. Mensagem de commit ----------
+MSG_FILE="${1:-}"
+if [ "$SO_MANUTENCAO" -eq 0 ] && [ -n "$MSG_FILE" ] && [ -f "$MSG_FILE" ]; then
+  MSG=$(head -1 "$MSG_FILE")
+  if [[ "$GRUPO" =~ ^grupo-([0-9]{2})$ ]]; then
+    GCODE="G${BASH_REMATCH[1]}"
+    PADRAO="^\[${GCODE}\] (feat|fix|docs|test|refactor|chore): .+"
+    if ! printf '%s' "$MSG" | grep -qE "$PADRAO"; then
+      erro "mensagem fora do padrão. Use: [$GCODE] feat: descricao curta"
+    fi
+    if [ ${#MSG} -gt 72 ]; then
+      printf '\033[33m[hook] aviso:\033[0m assunto do commit tem %d caracteres (ideal <= 72)\n' "${#MSG}"
+    fi
+  fi
+fi
+
+echo "------------------------------------------------------------"
+if [ "$FALHAS" -gt 0 ]; then
+  printf '\033[31m[hook] commit bloqueado (%d erro(s)).\033[0m\n' "$FALHAS"
+  echo "Rode: python3 scripts/check_entrega.py --grupo $GRUPO"
+  exit 1
+fi
+ok "commit liberado"
+exit 0
