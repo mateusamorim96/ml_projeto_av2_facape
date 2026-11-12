@@ -1,0 +1,64 @@
+# Configuração base do pipeline — G01
+# Todos os caminhos são relativos à raiz da pasta do grupo.
+
+project:
+  grupo: G01
+  nome: baixo-peso-sinasc-pe
+  ods: 3
+  meta: "3.2"
+  seed: 42
+
+dados:
+  raw: data/raw/            # ignorado pelo Git
+  processed: data/processed/
+  arquivo: preencher.csv    # definido na E2 (arquivos DNPEAAAA.dbc do DATASUS)
+  alvo: baixo_peso          # 1 se PESO < 2500 g
+  coluna_tempo: null        # preencha se houver ordem temporal
+  proporcao_teste: 0.2
+  estratificar: true
+
+preprocessamento:
+  # decisões que precisam de justificativa em docs/decisoes-tecnicas.md
+  imputacao_numerica: mediana      # mediana | media | constante
+  imputacao_categorica: moda
+  escalonamento: standard          # standard | minmax | none
+  one_hot_min_frequency: 5
+
+validacao:
+  esquema: stratified-k-fold       # stratified-k-fold | k-fold | time-series | group
+  n_splits: 5
+  n_repeats: 10
+  metrica_principal: average_precision   # PR-AUC (classe positiva ≈ 8,6%)
+  metrica_secundaria: recall
+
+modelos:
+  baseline:
+    tipo: dummy                    # dummy | logistic | decision-tree
+    parametros: {}
+  familia_1:
+    tipo: preencher
+    parametros:
+      preencher: null
+  familia_2:
+    tipo: preencher
+    parametros: {}
+  familia_3:
+    tipo: preencher
+    parametros: {}
+
+busca:
+  metodo: grid                     # grid | random
+  n_iter: 30
+  cv_interna: 3
+  scoring: preencher
+
+saidas:
+  tabelas: reports/tables/
+  figuras: reports/figures/
+  ambiente: reports/environment.json
+  runs: experiments/runs.csv
+
+teste_estatistico:
+  metodo: preencher                # wilcoxon | mcnemar | friedman-nemenyi
+  alpha: 0.05
+  correcao: preencher              # bonferroni | holm | none
