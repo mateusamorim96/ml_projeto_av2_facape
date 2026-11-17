@@ -23,10 +23,10 @@ Quem sofre o problema são os motoristas, passageiros e pedestres envolvidos em 
 
 ## 4. Decisão
 
-> “Se o modelo indicar alta probabilidade de acidente grave para um trecho de rodovia em determinada faixa de horário e condição, a PRF priorizará esse trecho e horário na escala de fiscalização e nas ações educativas.”
+> “Se o modelo indicar risco ≥ c (limiar escolhido para garantir recall ≥ 0,70 na validação) para um trecho de rodovia em determinada faixa de horário, a PRF incluirá esse trecho e horário como prioritários na escala de fiscalização do mês seguinte.”
 
 - **Quem decide:** a coordenação operacional da PRF em Pernambuco (delegacias e Unidades Operacionais responsáveis pelos trechos).
-- **Quando decide:** na montagem da escala de fiscalização (periodicidade semanal ou mensal) e no planejamento de operações sazonais (feriados, festas juninas, período de chuvas).
+- **Quando decide:** na montagem da escala mensal de fiscalização e no planejamento de operações sazonais (feriados, festas juninas, período de chuvas).
 - **Custo do falso positivo:** uma equipe é deslocada para um trecho e horário que não tinham risco elevado, desperdiçando horas de efetivo que poderiam estar em outro ponto.
 - **Custo do falso negativo:** um trecho de risco alto fica sem reforço; o custo potencial é uma morte ou lesão grave que a presença da fiscalização poderia ter ajudado a evitar. Por isso, este é o erro mais caro.
 - **Consequência de não usar o modelo:** a priorização continua baseada na contagem histórica de acidentes, que mistura ocorrências leves e graves e não considera a combinação de horário, clima e características da via.
@@ -40,7 +40,7 @@ Quem sofre o problema são os motoristas, passageiros e pedestres envolvidos em 
 - **Variável-alvo:** `acidente_grave` = 1 se o acidente teve pelo menos um morto ou um ferido grave; 0 caso contrário (apenas feridos leves, ilesos ou sem vítimas). A definição será construída a partir das colunas de contagem de vítimas, e **essas colunas não serão usadas como atributos**, assim como a própria classificação de gravidade da PRF, para evitar vazamento do alvo.
 - **Atributos previstos:** horário e fase do dia, dia da semana, mês, rodovia (BR) e quilômetro, município, condição meteorológica, tipo de pista, traçado da via, sentido da via e uso do solo. Causa e tipo do acidente só são conhecidos depois da ocorrência e não ajudam a decidir onde fiscalizar, então ficam de fora do modelo principal.
 - **Métrica principal:** AUC-PR (área sob a curva precisão-recall). A classe positiva (acidente grave) é minoritária, e o erro mais caro é deixar passar um caso grave; a acurácia seria enganosa, porque um modelo que sempre responde "não grave" já acerta a maioria dos casos.
-- **Métricas secundárias:** recall da classe grave com precisão mínima aceitável (ponto de operação definido na E5), F1 e ROC-AUC.
+- **Métricas secundárias:** recall da classe grave no limiar de operação (meta: recall ≥ 0,70, com a maior precisão possível), F1 e ROC-AUC.
 
 ## 6. Dados previstos
 
