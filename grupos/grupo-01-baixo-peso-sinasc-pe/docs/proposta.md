@@ -63,6 +63,7 @@ rejeitada.
 | vazamento | alta | alto | só variáveis da captação: saem dados do parto, nº de consultas e sexo do bebê (lista em `src/data/esquema.py`) |
 | viés entre subgrupos | média | alto | métricas por raça/cor, idade e região (E5) |
 | mudança de distribuição | média | médio | teste temporal em 2024; desempenho por ano |
+| reidentificação (LGPD) | baixa | alto | remover datas, hora e estabelecimento; município agregado por região; nenhuma célula publicada com menos de 10 registros |
 
 ## 8. O que faria mudar de rumo
 

@@ -158,7 +158,8 @@ def tabela_variaveis(df: pd.DataFrame) -> pd.DataFrame:
             "faixa observada": faixa_observada(serie, coluna),
             "% nulos": fmt_pct(nulos),
             "% ignorado": fmt_pct(ignorados) if coluna.ignorado else "—",
-            "descrição": coluna.descricao,
+            "descrição": coluna.descricao if coluna.codigos == "—"
+            else f"{coluna.descricao} (códigos: {coluna.codigos})",
             "uso": coluna.uso,
             "motivo / observação": coluna.motivo,
         })
@@ -232,10 +233,11 @@ def tabela_subgrupos(df: pd.DataFrame, cfg: dict, municipios: pd.DataFrame) -> p
                 linhas.append({"subgrupo": nome, "categoria": categoria, "registros": f"< {CELULA_MINIMA}",
                                "% da base": "—", "baixo peso": "—", "% baixo peso": "—"})
                 continue
+            pequeno = positivos < CELULA_MINIMA  # o % revelaria a contagem, pois n e publicado
             linhas.append({"subgrupo": nome, "categoria": categoria, "registros": fmt_int(n),
                            "% da base": fmt_pct(100 * n / len(base)),
-                           "baixo peso": fmt_int(positivos) if positivos >= CELULA_MINIMA else f"< {CELULA_MINIMA}",
-                           "% baixo peso": fmt_pct(100 * positivos / n, 2)})
+                           "baixo peso": f"< {CELULA_MINIMA}" if pequeno else fmt_int(positivos),
+                           "% baixo peso": "—" if pequeno else fmt_pct(100 * positivos / n, 2)})
     return pd.DataFrame(linhas)
 
 

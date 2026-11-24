@@ -58,24 +58,24 @@ Tipos, códigos e descrições seguem o dicionário oficial. A coluna **uso** ve
 <!-- auditoria:variaveis:inicio -->
 | coluna | tipo | unidade | origem | faixa observada | % nulos | % ignorado | descrição | uso | motivo / observação |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| `PESO` | numerica | g | DN, bloco I (recém-nascido) | 100–7.000 | 0,0% | — | Peso ao nascer, verificado até a 5ª hora de vida | alvo | alvo = 1 se PESO < 2500 g |
+| `PESO` | numerica | g | DN, bloco I (recém-nascido) | 100–7.000 | 0,0% | — | Peso ao nascer, verificado até a 5ª hora de vida (códigos: 4 dígitos) | alvo | alvo = 1 se PESO < 2500 g |
 | `IDADEMAE` | numerica | anos | DN, bloco III (mãe) | 10–65 | 0,0% | 0,0% | Idade da mãe | atributo |  |
-| `ESCMAE2010` | categorica | — | DN, bloco III (mãe) | 0, 1, 2, 3, 4, 5 | 0,6% | 0,5% | Escolaridade da mãe (última série concluída), nível | atributo |  |
-| `RACACORMAE` | categorica | — | DN, bloco III (mãe) | 1, 2, 3, 4, 5 | 1,3% | — | Raça/cor da mãe | atributo | também usada na análise por subgrupo (RQ-ÉT-02) |
-| `ESTCIVMAE` | categorica | — | DN, bloco III (mãe) | 1, 2, 3, 4, 5 | 0,6% | 0,3% | Situação conjugal da mãe | atributo |  |
-| `CODOCUPMAE` | categorica | — | DN, bloco III (mãe) | 1.571 códigos | 4,2% | — | Ocupação da mãe (CBO 2002) | atributo | alta cardinalidade: agrupar pelo grande grupo da CBO na E3 |
+| `ESCMAE2010` | categorica | — | DN, bloco III (mãe) | 0, 1, 2, 3, 4, 5 | 0,6% | 0,5% | Escolaridade da mãe (última série concluída), nível (códigos: 0 sem escolaridade; 1 fundamental I; 2 fundamental II; 3 médio; 4 superior incompleto; 5 superior completo; 9 ignorado) | atributo |  |
+| `RACACORMAE` | categorica | — | DN, bloco III (mãe) | 1, 2, 3, 4, 5 | 1,3% | — | Raça/cor da mãe (códigos: 1 branca; 2 preta; 3 amarela; 4 parda; 5 indígena) | atributo | também usada na análise por subgrupo (RQ-ÉT-02) |
+| `ESTCIVMAE` | categorica | — | DN, bloco III (mãe) | 1, 2, 3, 4, 5 | 0,6% | 0,3% | Situação conjugal da mãe (códigos: 1 solteira; 2 casada; 3 viúva; 4 separada; 5 união estável; 9 ignorada) | atributo |  |
+| `CODOCUPMAE` | categorica | — | DN, bloco III (mãe) | 1.571 códigos | 4,2% | — | Ocupação da mãe (CBO 2002) (códigos: 6 dígitos CBO) | atributo | alta cardinalidade: agrupar pelo grande grupo da CBO na E3 |
 | `QTDGESTANT` | numerica | gestações | DN, bloco V (gestação e parto) | 0–50 | 0,6% | 0,0% | Número de gestações anteriores | atributo |  |
 | `QTDPARTNOR` | numerica | partos | DN, bloco V (gestação e parto) | 0–91 | 0,7% | 0,0% | Número de partos vaginais anteriores | atributo |  |
 | `QTDPARTCES` | numerica | partos | DN, bloco V (gestação e parto) | 0–60 | 0,8% | 0,0% | Número de cesáreas anteriores | atributo |  |
 | `QTDFILVIVO` | numerica | filhos | DN, bloco V (gestação e parto) | 0–30 | 0,6% | 0,0% | Número de filhos vivos | atributo |  |
 | `QTDFILMORT` | numerica | perdas | DN, bloco V (gestação e parto) | 0–26 | 0,8% | 0,0% | Número de perdas fetais e abortos | atributo |  |
-| `PARIDADE` | categorica | — | calculada pelo sistema | 0, 1 | 0,0% | 0,0% | Paridade, calculada pelo sistema a partir do histórico | atributo |  |
-| `GRAVIDEZ` | categorica | — | DN, bloco V (gestação e parto) | 1, 2, 3 | 0,1% | 0,0% | Tipo de gravidez | atributo | supõe gestação múltipla já detectada (ultrassom) na captação — ameaça à validade |
-| `MESPRENAT` | numerica | mês | DN, bloco V (gestação e parto) | 1–9 | 1,5% | 2,5% | Mês de gestação em que iniciou o pré-natal | atributo |  |
-| `CODMUNRES` | categorica | — | DN, bloco III (mãe) | 186 códigos | 0,0% | — | Município de residência da mãe (IBGE, 6 dígitos) | atributo | convertido em mesorregião/região imediata (IBGE) na E3; Petrolina = 261110 |
-| `DTNASC` | data | — | DN, bloco I (recém-nascido) | ddmmaaaa | 0,0% | — | Data do nascimento | subgrupo | só confirma o ano do registro; a data em si não entra no modelo |
+| `PARIDADE` | categorica | — | calculada pelo sistema | 0, 1 | 0,0% | 0,0% | Paridade, calculada pelo sistema a partir do histórico (códigos: 0 nulípara; 1 multípara; 9 ignorado) | atributo |  |
+| `GRAVIDEZ` | categorica | — | DN, bloco V (gestação e parto) | 1, 2, 3 | 0,1% | 0,0% | Tipo de gravidez (códigos: 1 única; 2 dupla; 3 tripla ou mais; 9 ignorado) | atributo | supõe gestação múltipla já detectada (ultrassom) na captação — ameaça à validade |
+| `MESPRENAT` | numerica | mês | DN, bloco V (gestação e parto) | 1–9 | 1,5% | 2,5% | Mês de gestação em que iniciou o pré-natal (códigos: 01 … 09; 99 ignorado) | atributo |  |
+| `CODMUNRES` | categorica | — | DN, bloco III (mãe) | 186 códigos | 0,0% | — | Município de residência da mãe (IBGE, 6 dígitos) (códigos: código IBGE sem dígito verificador) | atributo | convertido em mesorregião/região imediata (IBGE) na E3; Petrolina = 261110 |
+| `DTNASC` | data | — | DN, bloco I (recém-nascido) | ddmmaaaa | 0,0% | — | Data do nascimento | descartada | identificador ou data que permite reidentificação; o ano vem do nome do arquivo |
 | `IDADEPAI` | numerica | anos | DN, bloco IV (pai) | 1–98 | 80,0% | 0,0% | Idade do pai | descartada | mais de 60% de nulos (ver auditoria) |
-| `CODPAISRES` | categorica | — | calculada pelo sistema | 1 | 21,9% | — | País de residência | descartada | existe só em 2015 e 2017; o arquivo já é de residentes em PE |
+| `CODPAISRES` | categorica | — | demais campos do arquivo | 1 | 21,9% | — | País de residência | descartada | existe só em 2015 e 2017; o arquivo já é de residentes em PE |
 | `SEMAGESTAC` | numerica | semanas | DN, bloco V (gestação e parto) | 19–45 | 1,9% | — | Semanas de gestação | descartada | vazamento: só é conhecida no parto ou depois dele |
 | `GESTACAO` | categorica | — | DN, bloco V (gestação e parto) | 1, 2, 3, 4, 5, 6, 9 | 1,9% | — | Semanas de gestação, agrupado (DN antiga) | descartada | vazamento: só é conhecida no parto ou depois dele |
 | `TPMETESTIM` | categorica | — | DN, bloco V (gestação e parto) | 1, 2, 8, 9 | 1,9% | — | Método para estimar a idade gestacional | descartada | vazamento: só é conhecida no parto ou depois dele |
@@ -92,7 +92,7 @@ Tipos, códigos e descrições seguem o dicionário oficial. A coluna **uso** ve
 | `IDANOMAL` | categorica | — | DN, bloco I (recém-nascido) | 1, 2, 9 | 0,2% | — | Anomalia congênita detectada no nascimento | descartada | vazamento: só é conhecida no parto ou depois dele |
 | `CODANOMAL` | texto | — | DN, bloco VI (anomalia) | 2.138 códigos | 98,9% | — | Anomalias congênitas (CID-10) | descartada | vazamento: só é conhecida no parto ou depois dele |
 | `HORANASC` | texto | — | DN, bloco I (recém-nascido) | 1.440 códigos | 0,1% | — | Hora do nascimento | descartada | vazamento: só é conhecida no parto ou depois dele |
-| `SEXO` | categorica | — | DN, bloco I (recém-nascido) | 0, 1, 2 | 0,0% | — | Sexo do recém-nascido | descartada | característica do recém-nascido, desconhecida na captação |
+| `SEXO` | categorica | — | DN, bloco I (recém-nascido) | 0, 1, 2 | 0,0% | — | Sexo do recém-nascido (códigos: os arquivos usam 0, 1 e 2; o dicionário oficial cita M, F e I) | descartada | característica do recém-nascido, desconhecida na captação |
 | `RACACOR` | categorica | — | DN, bloco I (recém-nascido) | 1, 2, 3, 4, 5 | 1,2% | — | Raça/cor do recém-nascido | descartada | característica do recém-nascido, desconhecida na captação; usa-se RACACORMAE |
 | `CONSPRENAT` | numerica | — | DN, bloco V (gestação e parto) | 0–99 | 1,1% | — | Número de consultas de pré-natal | descartada | vazamento: depende da duração da gestação |
 | `CONSULTAS` | categorica | — | DN, bloco V (gestação e parto) | 1, 2, 3, 4, 9 | 0,1% | — | Consultas de pré-natal, agrupado (DN antiga) | descartada | vazamento: depende da duração da gestação |
@@ -102,7 +102,7 @@ Tipos, códigos e descrições seguem o dicionário oficial. A coluna **uso** ve
 | `CODESTAB` | categorica | — | DN, bloco II (local do parto) | 844 códigos | 0,5% | — | Estabelecimento de nascimento (CNES) | descartada | identificador ou data que permite reidentificação; também é dado do parto |
 | `NUMEROLOTE` | texto | — | interna do sistema | 719 códigos | 0,0% | — | Número do lote | descartada | campo interno do sistema, sem significado clínico |
 | `CONTADOR` | texto | — | arquivo DATASUS, ausente do dicionário oficial | 618.822 códigos | 0,0% | — | Contador sequencial do registro (minúsculo em 2015 e 2017) | descartada | campo interno do sistema, sem significado clínico |
-| `DTDECLARAC` | data | — | DN, bloco VII (preenchimento) | ddmmaaaa | 0,3% | — | Data de preenchimento da DN | descartada | campo interno do sistema, sem significado clínico |
+| `DTDECLARAC` | data | — | DN, bloco VII (preenchimento) | ddmmaaaa | 0,3% | — | Data de preenchimento da DN | descartada | dado do preenchimento da DN, registrado depois do parto |
 | `DTCADASTRO` | data | — | interna do sistema | ddmmaaaa | 0,0% | — | Data de cadastro no sistema | descartada | campo interno do sistema, sem significado clínico |
 | `DTRECEBIM` | data | — | interna do sistema | ddmmaaaa | 0,0% | — | Data do último recebimento do lote | descartada | campo interno do sistema, sem significado clínico |
 | `DTRECORIGA` | data | — | interna do sistema | sem dado | 100,0% | — | Data de recebimento original | descartada | campo interno do sistema, sem significado clínico |
@@ -111,14 +111,14 @@ Tipos, códigos e descrições seguem o dicionário oficial. A coluna **uso** ve
 | `ORIGEM` | categorica | — | interna do sistema | 1, 2 | 0,0% | — | Banco de dados de origem | descartada | campo interno do sistema, sem significado clínico |
 | `STDNEPIDEM` | categorica | — | interna do sistema | 0, 1 | 0,0% | — | Status de DN epidemiológica | descartada | campo interno do sistema, sem significado clínico |
 | `STDNNOVA` | categorica | — | interna do sistema | 0, 1 | 0,0% | — | Status de DN nova | descartada | campo interno do sistema, sem significado clínico |
-| `TPFUNCRESP` | categorica | — | DN, bloco VII (preenchimento) | 1, 2, 3, 4, 5 | 3,9% | — | Função de quem preencheu a DN | descartada | campo interno do sistema, sem significado clínico |
-| `TPDOCRESP` | categorica | — | DN, bloco VII (preenchimento) | 0, 1, 2, 3, 4, 5 | 0,2% | — | Documento de quem preencheu a DN | descartada | campo interno do sistema, sem significado clínico |
+| `TPFUNCRESP` | categorica | — | DN, bloco VII (preenchimento) | 1, 2, 3, 4, 5 | 3,9% | — | Função de quem preencheu a DN | descartada | dado do preenchimento da DN, registrado depois do parto |
+| `TPDOCRESP` | categorica | — | DN, bloco VII (preenchimento) | 0, 1, 2, 3, 4, 5 | 0,2% | — | Documento de quem preencheu a DN | descartada | dado do preenchimento da DN, registrado depois do parto |
 | `ESCMAE` | categorica | — | DN, bloco III (mãe) | 1, 2, 3, 4, 5, 9 | 0,5% | — | Escolaridade em anos de estudo (DN antiga) | descartada | codificação da DN antiga, substituída por campo mais detalhado |
 | `ESCMAEAGR1` | categorica | — | calculada pelo sistema | 13 códigos | 0,6% | — | Escolaridade 2010 agregada | descartada | redundante com ESCMAE2010 |
 | `SERIESCMAE` | numerica | — | DN, bloco III (mãe) | 1–8 | 29,7% | — | Última série concluída | descartada | redundante com ESCMAE2010 |
 | `NATURALMAE` | categorica | — | DN, bloco III (mãe) | 27 códigos | 0,4% | — | Naturalidade da mãe (país, se estrangeira) | descartada | baixo valor preditivo esperado e aumenta risco de reidentificação |
-| `CODMUNNATU` | categorica | — | calculada pelo sistema | 3.056 códigos | 0,4% | — | Município de naturalidade da mãe | descartada | baixo valor preditivo esperado e aumenta risco de reidentificação |
-| `CODUFNATU` | categorica | — | calculada pelo sistema | 27 códigos | 0,4% | — | UF de naturalidade da mãe | descartada | baixo valor preditivo esperado e aumenta risco de reidentificação |
+| `CODMUNNATU` | categorica | — | demais campos do arquivo | 3.056 códigos | 0,4% | — | Município de naturalidade da mãe | descartada | baixo valor preditivo esperado e aumenta risco de reidentificação |
+| `CODUFNATU` | categorica | — | demais campos do arquivo | 27 códigos | 0,4% | — | UF de naturalidade da mãe | descartada | baixo valor preditivo esperado e aumenta risco de reidentificação |
 <!-- auditoria:variaveis:fim -->
 
 **Regra para atributos:** só entra no modelo o que é conhecido **na captação da gestante** (início do
@@ -172,6 +172,7 @@ listadas entram na preparação da E3, dentro do pipeline, depois do split.
 
 | Item verificado | Resultado | Ação |
 | --------------- | --------- | ---- |
+| nulos | nos atributos, o maior índice de ausência é o de `CODOCUPMAE` (4,2%), seguido de `MESPRENAT` (1,5% nulo + 2,5% ignorado); os demais ficam em até 1,3% (seção 3) | imputação dentro do `Pipeline`, ajustada só no treino de cada fold (E3) |
 | inconsistência temporal | as colunas internas mudam entre anos (`CONTADOR` minúsculo e `CODPAISRES` só em 2015 e 2017); nenhuma coluna usada como atributo muda de layout | nomes padronizados em maiúsculas na leitura (`src/data/carregar.py`) |
 | mudança de distribuição | a prevalência de baixo peso sobe a partir de 2021 (seção 6) | recorte em anos recentes e teste temporal em 2024 (seção 6) |
 | subnotificação / viés de coleta | o SINASC registra nascidos vivos, não perdas fetais: gestações que terminam em óbito fetal não entram na base. A cobertura do SINASC em PE não foi medida aqui | discutir como limitação; checar o indicador de cobertura da RIPSA (“Cobertura dos sistemas de informações de nascidos vivos”) no artigo |

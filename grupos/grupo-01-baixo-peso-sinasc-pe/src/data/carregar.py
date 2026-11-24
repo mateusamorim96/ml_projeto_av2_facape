@@ -10,6 +10,9 @@ import pandas as pd
 
 from src.config import RAIZ
 
+# Incrementar sempre que ler_dbc mudar: invalida caches gerados pela versao anterior.
+VERSAO_LEITURA = 1
+
 
 def ler_dbc(caminho: Path) -> pd.DataFrame:
     """Le um .dbc do DATASUS como texto (todas as colunas do SINASC sao 'Caracter').
@@ -36,7 +39,7 @@ def _chave_cache(cfg: dict, anos: list[int]) -> str:
     from src.data.download import ler_registro
 
     registro = ler_registro(RAIZ / cfg["dados"]["fonte"]["hashes"])
-    digest = hashlib.sha256()
+    digest = hashlib.sha256(f"leitura-v{VERSAO_LEITURA};".encode())
     for ano in anos:
         nome = cfg["dados"]["arquivo"].format(ano=ano)
         digest.update(f"{nome}:{registro.get(nome, {}).get('sha256', 'sem-hash')};".encode())
