@@ -17,7 +17,8 @@ da Estratégia Saúde da Família (ESF), que tem pouco tempo para consultas extr
 nascimentos do território, mas esse histórico não é usado para priorizar o acompanhamento.
 **Fora do escopo:** prever o peso exato, diagnosticar condições clínicas, prever prematuridade ou óbito, usar
 exames ou prontuário, e uso clínico real (o estudo é retrospectivo). Também ficam fora as gestações múltiplas,
-já reconhecidas como de risco sem modelo, e as gestantes sem pré-natal, que a decisão não alcança.
+já classificadas como de alto risco pelo Ministério da Saúde (*Manual de gestação de alto risco*, 2022, cap. 17),
+e as gestantes sem pré-natal, que a decisão não alcança.
 
 ## 3. Pergunta de ML
 

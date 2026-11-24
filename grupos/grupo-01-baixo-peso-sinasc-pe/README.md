@@ -1,6 +1,6 @@
 # G01 — Risco de baixo peso ao nascer em Pernambuco (ODS 3.2)
 
-> Projeto AV2 de Machine Learning · FACAPE 2026.2 Pasta:
+> Projeto AV2 de Machine Learning · FACAPE 2026.2 · Pasta
 > `grupos/grupo-01-baixo-peso-sinasc-pe` · Entrega atual: E2
 
 ## Integrantes
@@ -88,7 +88,7 @@ docker build -t grupo-01-baixo-peso-sinasc-pe .
 docker run --rm grupo-01-baixo-peso-sinasc-pe
 ```
 
-- **Tempo estimado de execução:** download cerca de 3 min; auditoria cerca de 4 min
+- **Tempo estimado de execução:** download cerca de 3 min; auditoria de 4 a 5 min
   na primeira vez (lê 10 arquivos `.dbc`) e segundos nas seguintes (cache em
   `data/processed/`). O pipeline completo será medido na E6.
 - **Saídas:** `reports/tables/`, `reports/figures/`, `reports/environment.json`
@@ -102,8 +102,9 @@ Disponíveis a partir da E4 (modelagem) e da E5 (comparação estatística).
 - Estudo retrospectivo: os registros do SINASC são preenchidos no parto, mas o
   modelo é pensado para o início do pré-natal. Por isso, só são usadas variáveis
   conhecidas nesse momento.
-- A prevalência de baixo peso sobe a partir de 2021 (7,8% → 8,7%). O teste
-  temporal em 2024 mede se o modelo aguenta essa mudança.
+- A prevalência de baixo peso entre todos os nascidos vivos de PE sobe a partir
+  de 2021 (de cerca de 7,8% para 8,7%). O teste temporal em 2024 mede se o
+  modelo aguenta essa mudança.
 - O SINASC só registra nascidos vivos: gestações que terminam em perda fetal
   não entram na base.
 - O modelo não prevê o peso exato nem diagnostica condições clínicas.
@@ -120,7 +121,8 @@ Disponíveis a partir da E4 (modelagem) e da E5 (comparação estatística).
   município entra agregado por região. Nenhuma tabela publicada tem célula com
   menos de 10 registros, e `data/raw/` não é versionado.
 - **Desempenho por subgrupo:** recall e precisão por raça/cor da mãe, faixa
-  etária da mãe e região de saúde (entrega E5).
+  etária da mãe e mesorregião de residência (IBGE), com destaque para Petrolina
+  (entrega E5).
 - **Uso de IA generativa:** Claude Code (Anthropic) foi usado para pesquisar as
   fontes de dados, escrever os scripts de download e auditoria (`src/data/`) e
   redigir a proposta, o dicionário de dados e este README. Os números citados

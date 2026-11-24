@@ -255,7 +255,10 @@ Prevalência nos grupos retirados (desenvolvimento, só peso plausível):
 
 - **Gestação múltipla.** A prevalência de baixo peso nesse grupo é muito maior que na gestação única
   (tabela acima). Mantê-lo faria o modelo ganhar desempenho só por “descobrir” que gêmeo nasce com baixo
-  peso, algo que a equipe já sabe sem modelo. Cada bebê também gera um registro, e a mesma gestação aparece
+  peso, algo que a equipe já sabe sem modelo: o *Manual de gestação de alto risco* do Ministério da Saúde
+  (2022, cap. 17) considera a gestação gemelar de alto risco “independentemente da presença ou da ausência
+  de complicações” e aponta o baixo peso entre as complicações fetais mais frequentes. Cada bebê também gera
+  um registro, e a mesma gestação aparece
   mais de uma vez: os pares cairiam em folds diferentes e inflariam a validação (RQ-PRE-03), sem
   identificador da mãe para usar `GroupKFold`. Com o corte, a ressalva sobre detectar a gestação múltipla
   no ultrassom deixa de existir.
@@ -263,7 +266,7 @@ Prevalência nos grupos retirados (desenvolvimento, só peso plausível):
   existe no registro retrospectivo, e, como o grupo tem prevalência maior, o modelo aprenderia a usar um
   “ausente” que nunca aparece no momento da decisão. Ficam fora também as gestantes que não fizeram
   pré-natal, que a decisão não alcança; isso é registrado como limitação.
-- **Tipo de gravidez ignorado.** Não é possível saber se a gestação é única.
+- **Tipo de gravidez ausente ou ignorado.** Não é possível saber se a gestação é única.
 
 **Conjuntos finais** (população do modelo):
 
@@ -289,8 +292,9 @@ Prevalência nos grupos retirados (desenvolvimento, só peso plausível):
   - a cláusula “SemDerivações” restringe o compartilhamento de versões adaptadas do material, e o projeto
     não compartilha nenhuma;
   - estatísticas e resultados de análise não reproduzem a base;
-  - a Política de Dados Abertos do Executivo federal (Decreto 8.777/2016) orienta o uso livre dos dados
-    publicados pelo governo;
+  - o SINASC é publicado pelo Ministério da Saúde, e a Política de Dados Abertos do Executivo federal diz
+    que “os dados disponibilizados pelo Poder Executivo federal […] são de livre utilização pelos Poderes
+    Públicos e pela sociedade” (Decreto 8.777/2016, art. 4º, com redação do Decreto 9.903/2019);
   - conclusão: o uso acadêmico com publicação de resultados é compatível.
 - **Ressalva:** a interpretação foi submetida ao professor na issue #1 do repositório da disciplina. Se a
   resposta for negativa, vale o plano de contingência da proposta (troca para o tema reserva).
@@ -329,8 +333,9 @@ publicados.
   recall diferente para cada grupo, e isso será medido na E5;
 - “indígena” e “amarela” têm cerca de 1% da base ou menos cada. As métricas desses grupos terão
   intervalos de confiança largos, e isso será reportado assim, sem esconder;
-- a raça/cor da mãe é usada como atributo porque é fator de risco documentado. O modelo serve apenas para
-  **priorizar** acompanhamento extra, nunca para negar atendimento (uso inadequado declarado na proposta).
+- a raça/cor da mãe é usada como atributo porque a prevalência de baixo peso difere entre os grupos
+  (tabela acima: mães pretas acima de brancas e pardas). O modelo serve apenas para **priorizar**
+  acompanhamento extra, nunca para negar atendimento (uso inadequado declarado na proposta).
 
 ## 9. LGPD
 
@@ -353,5 +358,25 @@ publicados.
 
 ```bash
 python -m src.data.download  --config configs/base.yaml   # baixa 2015–2024 + IBGE e confere SHA-256 (~3 min)
-python -m src.data.auditoria --config configs/base.yaml   # recalcula as tabelas deste arquivo (~4 min na 1ª vez)
+python -m src.data.auditoria --config configs/base.yaml   # recalcula as tabelas deste arquivo (4–5 min na 1ª vez)
 ```
+
+Reprodução conferida em clone limpo: ambiente novo a partir do `requirements.txt`, download com os 11
+hashes conferidos e auditoria regenerando este arquivo e as tabelas idênticos aos versionados.
+
+## 11. Referências
+
+- BRASIL. Ministério da Saúde. Secretaria de Vigilância em Saúde. *Estrutura do SINASC*. Brasília:
+  CGIAE/DASNT/SVS, atualizado em dez. 2019. Disponível em:
+  `ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Doc/Estrutura_SINASC_para_CD.pdf`.
+- BRASIL. Ministério da Saúde. Secretaria de Atenção Primária à Saúde. *Manual de gestação de alto risco*
+  [recurso eletrônico]. Brasília: Ministério da Saúde, 2022. ISBN 978-65-5993-312-9. Cap. 17, “Gestação
+  múltipla”. Disponível em: <https://bvsms.saude.gov.br/bvs/publicacoes/manual_gestacao_alto_risco.pdf>.
+- BRASIL. Lei nº 13.709, de 14 de agosto de 2018. Lei Geral de Proteção de Dados Pessoais (LGPD), art. 12.
+- BRASIL. Decreto nº 8.777, de 11 de maio de 2016. Institui a Política de Dados Abertos do Poder Executivo
+  federal. Art. 4º com redação dada pelo Decreto nº 9.903, de 8 de julho de 2019. Texto consolidado:
+  <https://www2.camara.leg.br/legin/fed/decret/2016/decreto-8777-11-maio-2016-783082-normaatualizada-pe.html>.
+- CREATIVE COMMONS. *Atribuição-SemDerivações 3.0 Não Adaptada (CC BY-ND 3.0)*. Disponível em:
+  <https://creativecommons.org/licenses/by-nd/3.0/deed.pt-br>.
+- IBGE. *API de Localidades*: municípios de Pernambuco. Disponível em:
+  <https://servicodados.ibge.gov.br/api/v1/localidades/estados/26/municipios>.

@@ -40,7 +40,7 @@ validacao:
   esquema: stratified-k-fold       # stratified-k-fold | k-fold | time-series | group
   n_splits: 5
   n_repeats: 10
-  metrica_principal: average_precision   # PR-AUC (classe positiva ≈ 8,6%)
+  metrica_principal: average_precision   # PR-AUC (classe positiva ≈ 7% na população)
   metrica_secundaria: recall
 
 modelos:
