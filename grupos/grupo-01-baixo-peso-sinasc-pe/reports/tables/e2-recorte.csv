@@ -1,0 +1,3 @@
+conjunto,anos,registros com peso plausível,baixo peso,% baixo peso
+desenvolvimento (treino + CV),2019–2023,621.404,50.765,"8,17%"
+teste temporal (uso único),2024,110.759,9.643,"8,71%"
