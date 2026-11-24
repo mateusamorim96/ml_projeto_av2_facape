@@ -11,11 +11,20 @@ project:
 dados:
   raw: data/raw/            # ignorado pelo Git
   processed: data/processed/
-  arquivo: preencher.csv    # definido na E2 (arquivos DNPEAAAA.dbc do DATASUS)
+  fonte:
+    sinasc_url: "ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE{ano}.dbc"
+    ibge_url: "https://servicodados.ibge.gov.br/api/v1/localidades/estados/26/municipios"
+    ibge_arquivo: ibge-municipios-pe.json
+    hashes: configs/hashes-dados-brutos.csv   # SHA-256 de cada arquivo bruto (versionado)
+  arquivo: "DNPE{ano}.dbc"  # SINASC por UF de residência (Pernambuco)
+  anos: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]  # anos definitivos auditados
+  anos_desenvolvimento: [2019, 2020, 2021, 2022, 2023]  # treino + validação cruzada
+  ano_teste: 2024           # teste temporal externo, usado uma única vez no final
   alvo: baixo_peso          # 1 se PESO < 2500 g
-  coluna_tempo: null        # preencha se houver ordem temporal
-  proporcao_teste: 0.2
-  estratificar: true
+  limiar_peso_g: 2500
+  municipio_local: "261110" # Petrolina (IBGE, 6 dígitos)
+  coluna_tempo: ANO         # derivada do nome do arquivo
+  estratificar: true        # folds de CV estratificados pelo alvo (dentro do desenvolvimento)
 
 preprocessamento:
   # decisões que precisam de justificativa em docs/decisoes-tecnicas.md
