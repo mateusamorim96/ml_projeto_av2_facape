@@ -8,7 +8,7 @@ ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Doc/Estrutura_SINASC_par
 Usos possiveis:
   alvo       -> origem da variavel-alvo
   atributo   -> entra no modelo (conhecido no inicio do pre-natal)
-  subgrupo   -> usado apenas para analise de desempenho por grupo / recorte
+  filtro     -> define a populacao (src/data/populacao.py), nao entra no modelo
   descartada -> fora do modelo; `motivo` explica por que
 """
 from __future__ import annotations
@@ -68,11 +68,12 @@ COLUNAS: tuple[Coluna, ...] = (
            ignorado=("99",)),
     Coluna("PARIDADE", "Paridade, calculada pelo sistema a partir do histórico", "categorica", "atributo",
            codigos="0 nulípara; 1 multípara; 9 ignorado", ignorado=("9",)),
-    Coluna("GRAVIDEZ", "Tipo de gravidez", "categorica", "atributo",
+    Coluna("GRAVIDEZ", "Tipo de gravidez", "categorica", "filtro",
            codigos="1 única; 2 dupla; 3 tripla ou mais; 9 ignorado", ignorado=("9",),
-           motivo="supõe gestação múltipla já detectada (ultrassom) na captação — ameaça à validade"),
+           motivo="população = só gestação única (seção 6); constante dentro dela"),
     Coluna("MESPRENAT", "Mês de gestação em que iniciou o pré-natal", "numerica", "atributo",
-           unidade="mês", codigos="01 … 09; 99 ignorado", ignorado=("99",)),
+           unidade="mês", codigos="01 … 09; 99 ignorado", ignorado=("99",),
+           motivo="registros sem o mês ficam fora da população (seção 6)"),
     Coluna("CODMUNRES", "Município de residência da mãe (IBGE, 6 dígitos)", "categorica", "atributo",
            codigos="código IBGE sem dígito verificador",
            motivo="convertido em mesorregião/região imediata (IBGE) na E3; Petrolina = 261110"),

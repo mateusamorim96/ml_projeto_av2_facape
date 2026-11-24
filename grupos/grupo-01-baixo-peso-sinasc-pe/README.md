@@ -39,8 +39,8 @@ Proposta completa: [`docs/proposta.md`](docs/proposta.md).
 - **Custo do falso positivo:** uma consulta extra desnecessária. Custo baixo.
 - **Custo do falso negativo:** a gestante de risco fica sem acompanhamento
   reforçado. Custo alto.
-- **Métrica principal:** PR-AUC. Com cerca de 8% de positivos, um modelo que
-  sempre responde “não” já teria mais de 91% de acurácia, por isso a acurácia
+- **Métrica principal:** PR-AUC. Com cerca de 7% de positivos, um modelo que
+  sempre responde “não” já teria mais de 93% de acurácia, por isso a acurácia
   não serve como métrica.
 
 ## 3. Dados e licença
@@ -61,9 +61,11 @@ Proposta completa: [`docs/proposta.md`](docs/proposta.md).
   13.709/2018, art. 12). Quase-identificadores (datas, hora, estabelecimento)
   são removidos antes de qualquer análise.
 - **Volume:** 1.282.496 registros × 61 colunas (PE, 2015–2024).
-- **Recorte:** desenvolvimento em 2019–2023 (621.404 registros) e teste temporal
-  em 2024 (110.759 registros), usado uma única vez no final.
-- **Alvo:** `baixo_peso = 1` se `PESO < 2500` g (8,17% no desenvolvimento).
+- **População do modelo:** gestações únicas com mês de início do pré-natal
+  registrado, que é quem passa pela captação.
+- **Recorte:** desenvolvimento em 2019–2023 (585.522 registros na população) e
+  teste temporal em 2024 (104.919), usado uma única vez no final.
+- **Alvo:** `baixo_peso = 1` se `PESO < 2500` g (6,96% no desenvolvimento).
 - Auditoria completa, gerada por script, em
   [`docs/dicionario-de-dados.md`](docs/dicionario-de-dados.md).
 
@@ -105,6 +107,9 @@ Disponíveis a partir da E4 (modelagem) e da E5 (comparação estatística).
 - O SINASC só registra nascidos vivos: gestações que terminam em perda fetal
   não entram na base.
 - O modelo não prevê o peso exato nem diagnostica condições clínicas.
+- Não se aplica a gestações múltiplas nem a gestantes que não fizeram pré-natal:
+  os dois grupos ficaram fora da população e têm prevalência maior de baixo
+  peso.
 
 ## 7. Uso responsável
 

@@ -23,11 +23,11 @@ from src.config import RAIZ, carregar_config
 from src.data.carregar import carregar_municipios, carregar_sinasc
 from src.data.download import ler_registro
 from src.data.esquema import COLUNAS, POR_NOME, Coluna, origem
+from src.data.populacao import PESO_PLAUSIVEL, etapas_populacao, mascara_populacao, peso_numerico
 
 DICIONARIO = RAIZ / "docs" / "dicionario-de-dados.md"
 INTERNAS = ("CONTADOR", "NUMEROLOTE", "DTCADASTRO", "DTRECEBIM", "DTRECORIGA", "DIFDATA",
             "VERSAOSIST", "ORIGEM", "STDNEPIDEM", "STDNNOVA", "CODPAISRES")
-PESO_PLAUSIVEL = (300, 6500)  # g; fora disso o registro e tratado como erro de digitacao
 IDADE_PLAUSIVEL = (10, 55)    # anos
 MUNICIPIO_IGNORADO = "260000"
 CELULA_MINIMA = 10            # cruzamentos com menos registros nao sao publicados
@@ -64,8 +64,15 @@ def atualizar_blocos(caminho: Path, blocos: dict[str, str]) -> None:
 
 # --------------------------------------------------------------------- calculo
 
-def peso_numerico(df: pd.DataFrame) -> pd.Series:
-    return pd.to_numeric(df["PESO"], errors="coerce")
+def conjuntos(cfg: dict) -> dict[str, list[int]]:
+    return {
+        "desenvolvimento (treino + CV)": list(cfg["dados"]["anos_desenvolvimento"]),
+        "teste temporal (uso único)": [cfg["dados"]["ano_teste"]],
+    }
+
+
+def rotulo_anos(anos: list[int]) -> str:
+    return f"{min(anos)}–{max(anos)}" if len(anos) > 1 else str(anos[0])
 
 
 def ausente_ou_ignorado(serie: pd.Series, coluna: Coluna | None) -> pd.Series:
@@ -137,7 +144,7 @@ def faixa_observada(serie: pd.Series, coluna: Coluna) -> str:
 
 
 def tabela_variaveis(df: pd.DataFrame) -> pd.DataFrame:
-    ordem_uso = {"alvo": 0, "atributo": 1, "subgrupo": 2, "descartada": 3}
+    ordem_uso = {"alvo": 0, "atributo": 1, "filtro": 2, "descartada": 3}
     linhas = []
     for coluna in sorted(COLUNAS, key=lambda c: ordem_uso[c.uso]):
         if coluna.nome not in df.columns:
@@ -210,9 +217,11 @@ def tabela_qualidade(df: pd.DataFrame, cfg: dict, municipios: pd.DataFrame) -> p
 
 
 def tabela_subgrupos(df: pd.DataFrame, cfg: dict, municipios: pd.DataFrame) -> pd.DataFrame:
+    """Subgrupos na populacao do modelo, anos de desenvolvimento."""
     limiar = cfg["dados"]["limiar_peso_g"]
     peso = peso_numerico(df)
-    base = df[peso.between(*PESO_PLAUSIVEL)].copy()
+    no_desenvolvimento = df["ANO"].isin(cfg["dados"]["anos_desenvolvimento"])
+    base = df[mascara_populacao(df, cfg) & no_desenvolvimento].copy()
     base["baixo_peso"] = peso[base.index] < limiar
     raca = {"1": "branca", "2": "preta", "3": "amarela", "4": "parda", "5": "indígena"}
     idade = pd.to_numeric(base["IDADEMAE"].where(base["IDADEMAE"] != "99"), errors="coerce")
@@ -241,37 +250,81 @@ def tabela_subgrupos(df: pd.DataFrame, cfg: dict, municipios: pd.DataFrame) -> p
     return pd.DataFrame(linhas)
 
 
-def tabela_recorte(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
-    """Tamanho e prevalencia dos conjuntos de desenvolvimento e de teste temporal."""
+def tabela_populacao(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
+    """Fluxo de inclusao: quantos registros cada criterio retira e como a prevalencia muda."""
+    limiar = cfg["dados"]["limiar_peso_g"]
+    baixo = peso_numerico(df) < limiar
+    etapas = etapas_populacao(df, cfg)
+    linhas = []
+    for nome, anos in conjuntos(cfg).items():
+        no_periodo = df["ANO"].isin(anos)
+        total = int(no_periodo.sum())
+        linhas.append({"conjunto": nome, "anos": rotulo_anos(anos), "etapa": "registros no período",
+                       "registros": fmt_int(total), "% do período": "100,0%", "baixo peso": "—",
+                       "% baixo peso": "—"})
+        for etapa, mascara in etapas:
+            dentro = no_periodo & mascara
+            n, positivos = int(dentro.sum()), int((dentro & baixo).sum())
+            linhas.append({"conjunto": nome, "anos": rotulo_anos(anos), "etapa": f"+ {etapa}",
+                           "registros": fmt_int(n), "% do período": fmt_pct(100 * n / total),
+                           "baixo peso": fmt_int(positivos), "% baixo peso": fmt_pct(100 * positivos / n, 2)})
+    return pd.DataFrame(linhas)
+
+
+def tabela_excluidos(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
+    """Prevalencia nos grupos retirados da populacao (desenvolvimento), para justificar o corte."""
     limiar = cfg["dados"]["limiar_peso_g"]
     peso = peso_numerico(df)
-    valido = peso.between(*PESO_PLAUSIVEL)
-    conjuntos = {
-        "desenvolvimento (treino + CV)": cfg["dados"]["anos_desenvolvimento"],
-        "teste temporal (uso único)": [cfg["dados"]["ano_teste"]],
+    base = df["ANO"].isin(cfg["dados"]["anos_desenvolvimento"]) & peso.between(*PESO_PLAUSIVEL)
+    baixo = peso < limiar
+    unica = df["GRAVIDEZ"].isin(cfg["dados"]["populacao"]["gravidez"])
+    grupos = {
+        "gestação múltipla (GRAVIDEZ 2 ou 3)": df["GRAVIDEZ"].isin(["2", "3"]),
+        "tipo de gravidez ausente ou ignorado": ~df["GRAVIDEZ"].isin(["1", "2", "3"]),
+        "gestação única sem mês de início do pré-natal": unica & ~df["MESPRENAT"].isin(
+            [f"{m:02d}" for m in range(1, 10)]),
+        "população do modelo": mascara_populacao(df, cfg),
     }
     linhas = []
-    for nome, anos in conjuntos.items():
-        filtro = valido & df["ANO"].isin(anos)
-        positivos = int((filtro & (peso < limiar)).sum())
-        linhas.append({"conjunto": nome, "anos": f"{min(anos)}–{max(anos)}" if len(anos) > 1 else str(anos[0]),
-                       "registros com peso plausível": fmt_int(filtro.sum()), "baixo peso": fmt_int(positivos),
-                       "% baixo peso": fmt_pct(100 * positivos / filtro.sum(), 2)})
+    for nome, mascara in grupos.items():
+        dentro = base & mascara
+        n, positivos = int(dentro.sum()), int((dentro & baixo).sum())
+        linhas.append({"grupo": nome, "registros": fmt_int(n), "% do desenvolvimento": fmt_pct(100 * n / base.sum()),
+                       "baixo peso": fmt_int(positivos), "% baixo peso": fmt_pct(100 * positivos / n, 2)})
+    return pd.DataFrame(linhas)
+
+
+def tabela_recorte(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
+    """Tamanho e prevalencia da populacao do modelo em cada conjunto."""
+    baixo = peso_numerico(df) < cfg["dados"]["limiar_peso_g"]
+    populacao = mascara_populacao(df, cfg)
+    linhas = []
+    for nome, anos in conjuntos(cfg).items():
+        dentro = populacao & df["ANO"].isin(anos)
+        n, positivos = int(dentro.sum()), int((dentro & baixo).sum())
+        linhas.append({"conjunto": nome, "anos": rotulo_anos(anos), "registros na população": fmt_int(n),
+                       "baixo peso": fmt_int(positivos), "% baixo peso": fmt_pct(100 * positivos / n, 2)})
     return pd.DataFrame(linhas)
 
 
 def resumo_alvo(df: pd.DataFrame, cfg: dict) -> str:
+    limiar = cfg["dados"]["limiar_peso_g"]
     peso = peso_numerico(df)
-    base = peso.between(*PESO_PLAUSIVEL)
-    positivos = int((base & (peso < cfg["dados"]["limiar_peso_g"])).sum())
-    n = int(base.sum())
+    plausivel = peso.between(*PESO_PLAUSIVEL)
+    positivos = int((plausivel & (peso < limiar)).sum())
+    n = int(plausivel.sum())
     anos = sorted(df["ANO"].unique())
+    dev = mascara_populacao(df, cfg) & df["ANO"].isin(cfg["dados"]["anos_desenvolvimento"])
+    n_dev, pos_dev = int(dev.sum()), int((dev & (peso < limiar)).sum())
+    baseline = f"{pos_dev / n_dev:.3f}".replace(".", ",")
     return (f"- **Período auditado:** {anos[0]}–{anos[-1]} ({len(anos)} anos), "
-            f"{fmt_int(len(df))} registros brutos e {fmt_int(n)} com peso plausível.\n"
-            f"- **Distribuição:** {fmt_int(positivos)} casos de baixo peso "
-            f"({fmt_pct(100 * positivos / n, 2)}) e {fmt_int(n - positivos)} sem baixo peso "
-            f"({fmt_pct(100 * (n - positivos) / n, 2)}). Razão de desbalanceamento ≈ 1:"
-            f"{round((n - positivos) / positivos)}.")
+            f"{fmt_int(len(df))} registros brutos e {fmt_int(n)} com peso plausível, dos quais "
+            f"{fmt_int(positivos)} com baixo peso ({fmt_pct(100 * positivos / n, 2)}).\n"
+            f"- **População do modelo, desenvolvimento ({rotulo_anos(cfg['dados']['anos_desenvolvimento'])}):** "
+            f"{fmt_int(n_dev)} registros, {fmt_int(pos_dev)} com baixo peso ({fmt_pct(100 * pos_dev / n_dev, 2)}) "
+            f"e {fmt_int(n_dev - pos_dev)} sem ({fmt_pct(100 * (n_dev - pos_dev) / n_dev, 2)}). "
+            f"Razão de desbalanceamento ≈ 1:{round((n_dev - pos_dev) / pos_dev)}. "
+            f"PR-AUC do baseline (prevalência) ≈ {baseline}.")
 
 
 # ------------------------------------------------------------------------ main
@@ -293,15 +346,17 @@ def main(argv: list[str] | None = None) -> int:
         "variaveis": tabela_variaveis(df),
         "qualidade": tabela_qualidade(df, cfg, municipios),
         "subgrupos": tabela_subgrupos(df, cfg, municipios),
+        "populacao": tabela_populacao(df, cfg),
+        "excluidos": tabela_excluidos(df, cfg),
         "recorte": tabela_recorte(df, cfg),
     }
+    blocos = {nome: tabela_md(tabela) for nome, tabela in tabelas.items()}
+    blocos["alvo"] = resumo_alvo(df, cfg)
+    atualizar_blocos(DICIONARIO, blocos)  # primeiro: se faltar marcador, nada e gravado
     pasta = RAIZ / cfg["saidas"]["tabelas"]
     pasta.mkdir(parents=True, exist_ok=True)
     for nome, tabela in tabelas.items():
         tabela.to_csv(pasta / f"tabela-auditoria-{nome}.csv", index=False)
-    blocos = {nome: tabela_md(tabela) for nome, tabela in tabelas.items()}
-    blocos["alvo"] = resumo_alvo(df, cfg)
-    atualizar_blocos(DICIONARIO, blocos)
     print(f"[auditoria] tabelas em {pasta.relative_to(RAIZ)}/ e blocos atualizados em "
           f"{DICIONARIO.relative_to(RAIZ)}")
     return 0

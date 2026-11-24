@@ -11,9 +11,9 @@ coluna,tipo,unidade,origem,faixa observada,% nulos,% ignorado,descrição,uso,mo
 `QTDFILVIVO`,numerica,filhos,"DN, bloco V (gestação e parto)",0–30,"0,6%","0,0%",Número de filhos vivos,atributo,
 `QTDFILMORT`,numerica,perdas,"DN, bloco V (gestação e parto)",0–26,"0,8%","0,0%",Número de perdas fetais e abortos,atributo,
 `PARIDADE`,categorica,—,calculada pelo sistema,"0, 1","0,0%","0,0%","Paridade, calculada pelo sistema a partir do histórico (códigos: 0 nulípara; 1 multípara; 9 ignorado)",atributo,
-`GRAVIDEZ`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 3","0,1%","0,0%",Tipo de gravidez (códigos: 1 única; 2 dupla; 3 tripla ou mais; 9 ignorado),atributo,supõe gestação múltipla já detectada (ultrassom) na captação — ameaça à validade
-`MESPRENAT`,numerica,mês,"DN, bloco V (gestação e parto)",1–9,"1,5%","2,5%",Mês de gestação em que iniciou o pré-natal (códigos: 01 … 09; 99 ignorado),atributo,
+`MESPRENAT`,numerica,mês,"DN, bloco V (gestação e parto)",1–9,"1,5%","2,5%",Mês de gestação em que iniciou o pré-natal (códigos: 01 … 09; 99 ignorado),atributo,registros sem o mês ficam fora da população (seção 6)
 `CODMUNRES`,categorica,—,"DN, bloco III (mãe)",186 códigos,"0,0%",—,"Município de residência da mãe (IBGE, 6 dígitos) (códigos: código IBGE sem dígito verificador)",atributo,convertido em mesorregião/região imediata (IBGE) na E3; Petrolina = 261110
+`GRAVIDEZ`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 3","0,1%","0,0%",Tipo de gravidez (códigos: 1 única; 2 dupla; 3 tripla ou mais; 9 ignorado),filtro,população = só gestação única (seção 6); constante dentro dela
 `DTNASC`,data,—,"DN, bloco I (recém-nascido)",ddmmaaaa,"0,0%",—,Data do nascimento,descartada,identificador ou data que permite reidentificação; o ano vem do nome do arquivo
 `IDADEPAI`,numerica,anos,"DN, bloco IV (pai)",1–98,"80,0%","0,0%",Idade do pai,descartada,mais de 60% de nulos (ver auditoria)
 `CODPAISRES`,categorica,—,demais campos do arquivo,1,"21,9%",—,País de residência,descartada,existe só em 2015 e 2017; o arquivo já é de residentes em PE

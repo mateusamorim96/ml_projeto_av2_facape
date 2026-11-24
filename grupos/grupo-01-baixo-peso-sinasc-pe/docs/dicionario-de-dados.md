@@ -47,7 +47,7 @@ DATASUS republicar um ano (o arquivo de 2016 foi republicado em 2025, por exempl
 | (a) proveniência institucional documentada | **atende** | Ministério da Saúde/SVS, com dicionário oficial (seção 1) |
 | (b) ≥ 5.000 registros ou ≥ 40 atributos | **atende** | mais de 1,2 milhão de registros e 61 colunas (tabela da seção 1) |
 | (c) alvo não trivial | **atende** | seção 4: o peso é medido, não derivado de outra coluna, e as colunas que o antecipam foram excluídas |
-| (d) desbalanceamento, ausentes, ruído ou heterogeneidade | **atende** | cerca de 8% de positivos; pesos implausíveis; prevalência muda entre anos e regiões (seções 4, 5 e 6) |
+| (d) desbalanceamento, ausentes, ruído ou heterogeneidade | **atende** | entre 7% e 8% de positivos (seção 4); pesos implausíveis; prevalência muda entre anos e regiões (seções 4, 5 e 6) |
 | (e) licença compatível com uso acadêmico | **atende, com ressalva** | seção 7 |
 
 ## 3. Variáveis
@@ -70,9 +70,9 @@ Tipos, códigos e descrições seguem o dicionário oficial. A coluna **uso** ve
 | `QTDFILVIVO` | numerica | filhos | DN, bloco V (gestação e parto) | 0–30 | 0,6% | 0,0% | Número de filhos vivos | atributo |  |
 | `QTDFILMORT` | numerica | perdas | DN, bloco V (gestação e parto) | 0–26 | 0,8% | 0,0% | Número de perdas fetais e abortos | atributo |  |
 | `PARIDADE` | categorica | — | calculada pelo sistema | 0, 1 | 0,0% | 0,0% | Paridade, calculada pelo sistema a partir do histórico (códigos: 0 nulípara; 1 multípara; 9 ignorado) | atributo |  |
-| `GRAVIDEZ` | categorica | — | DN, bloco V (gestação e parto) | 1, 2, 3 | 0,1% | 0,0% | Tipo de gravidez (códigos: 1 única; 2 dupla; 3 tripla ou mais; 9 ignorado) | atributo | supõe gestação múltipla já detectada (ultrassom) na captação — ameaça à validade |
-| `MESPRENAT` | numerica | mês | DN, bloco V (gestação e parto) | 1–9 | 1,5% | 2,5% | Mês de gestação em que iniciou o pré-natal (códigos: 01 … 09; 99 ignorado) | atributo |  |
+| `MESPRENAT` | numerica | mês | DN, bloco V (gestação e parto) | 1–9 | 1,5% | 2,5% | Mês de gestação em que iniciou o pré-natal (códigos: 01 … 09; 99 ignorado) | atributo | registros sem o mês ficam fora da população (seção 6) |
 | `CODMUNRES` | categorica | — | DN, bloco III (mãe) | 186 códigos | 0,0% | — | Município de residência da mãe (IBGE, 6 dígitos) (códigos: código IBGE sem dígito verificador) | atributo | convertido em mesorregião/região imediata (IBGE) na E3; Petrolina = 261110 |
+| `GRAVIDEZ` | categorica | — | DN, bloco V (gestação e parto) | 1, 2, 3 | 0,1% | 0,0% | Tipo de gravidez (códigos: 1 única; 2 dupla; 3 tripla ou mais; 9 ignorado) | filtro | população = só gestação única (seção 6); constante dentro dela |
 | `DTNASC` | data | — | DN, bloco I (recém-nascido) | ddmmaaaa | 0,0% | — | Data do nascimento | descartada | identificador ou data que permite reidentificação; o ano vem do nome do arquivo |
 | `IDADEPAI` | numerica | anos | DN, bloco IV (pai) | 1–98 | 80,0% | 0,0% | Idade do pai | descartada | mais de 60% de nulos (ver auditoria) |
 | `CODPAISRES` | categorica | — | demais campos do arquivo | 1 | 21,9% | — | País de residência | descartada | existe só em 2015 e 2017; o arquivo já é de residentes em PE |
@@ -130,6 +130,10 @@ pré-natal), que é o momento da decisão da proposta. Por isso saem:
   prematuro tem menos consultas por ter sido mais curto, o que vazaria o desfecho;
 - características do bebê (`SEXO`, `RACACOR`), desconhecidas na captação.
 
+`GRAVIDEZ` e `MESPRENAT` também **definem a população** do modelo (seção 6): só entram gestações únicas
+com mês de início do pré-natal registrado. Por isso `GRAVIDEZ` é filtro, não atributo, já que fica constante
+dentro da população.
+
 ## 4. Variável-alvo
 
 - **Nome:** `baixo_peso`.
@@ -139,8 +143,8 @@ pré-natal), que é o momento da decisão da proposta. Por isso saem:
 - **Distribuição:**
 
 <!-- auditoria:alvo:inicio -->
-- **Período auditado:** 2015–2024 (10 anos), 1.282.496 registros brutos e 1.281.940 com peso plausível.
-- **Distribuição:** 102.937 casos de baixo peso (8,03%) e 1.179.003 sem baixo peso (91,97%). Razão de desbalanceamento ≈ 1:11.
+- **Período auditado:** 2015–2024 (10 anos), 1.282.496 registros brutos e 1.281.940 com peso plausível, dos quais 102.937 com baixo peso (8,03%).
+- **População do modelo, desenvolvimento (2019–2023):** 585.522 registros, 40.761 com baixo peso (6,96%) e 544.761 sem (93,04%). Razão de desbalanceamento ≈ 1:13. PR-AUC do baseline (prevalência) ≈ 0,070.
 <!-- auditoria:alvo:fim -->
 
 - **Por que não é trivial:**
@@ -148,8 +152,10 @@ pré-natal), que é o momento da decisão da proposta. Por isso saem:
     resultado de regra determinística sobre elas;
   - as colunas que praticamente anteciparam o desfecho (semanas de gestação, Apgar, nº de consultas) foram
     retiradas de propósito, então o modelo só tem fatores de risco **anteriores** ao parto;
-  - o baseline que sempre responde “não” tem PR-AUC igual à prevalência (cerca de 0,08). Qualquer ganho
-    acima disso precisa vir de sinal real.
+  - o baseline que sempre responde “não” tem PR-AUC igual à prevalência da população (valor no bloco
+    acima). Qualquer ganho acima disso precisa vir de sinal real;
+  - as gestações múltiplas, em que o baixo peso seria quase óbvio, ficaram fora da população (seção 6),
+    para que o modelo não ganhe desempenho com um caso que a equipe já reconhece sem ele.
 
 ## 5. Qualidade e riscos
 
@@ -172,14 +178,14 @@ listadas entram na preparação da E3, dentro do pipeline, depois do split.
 
 | Item verificado | Resultado | Ação |
 | --------------- | --------- | ---- |
-| nulos | nos atributos, o maior índice de ausência é o de `CODOCUPMAE` (4,2%), seguido de `MESPRENAT` (1,5% nulo + 2,5% ignorado); os demais ficam em até 1,3% (seção 3) | imputação dentro do `Pipeline`, ajustada só no treino de cada fold (E3) |
+| nulos | nos atributos, o maior índice de ausência é o de `CODOCUPMAE` (4,2%); os demais ficam em até 1,3% (seção 3). `MESPRENAT` (1,5% nulo + 2,5% ignorado) não é imputado: o registro sem o mês sai da população (seção 6) | imputação dentro do `Pipeline`, ajustada só no treino de cada fold (E3) |
 | inconsistência temporal | as colunas internas mudam entre anos (`CONTADOR` minúsculo e `CODPAISRES` só em 2015 e 2017); nenhuma coluna usada como atributo muda de layout | nomes padronizados em maiúsculas na leitura (`src/data/carregar.py`) |
 | mudança de distribuição | a prevalência de baixo peso sobe a partir de 2021 (seção 6) | recorte em anos recentes e teste temporal em 2024 (seção 6) |
 | subnotificação / viés de coleta | o SINASC registra nascidos vivos, não perdas fetais: gestações que terminam em óbito fetal não entram na base. A cobertura do SINASC em PE não foi medida aqui | discutir como limitação; checar o indicador de cobertura da RIPSA (“Cobertura dos sistemas de informações de nascidos vivos”) no artigo |
-| `RACACORMAE` ignorada | 1,3% dos registros, com prevalência de baixo peso mais baixa que a dos demais grupos (seção 8) | categoria “ignorada” mantida separada, sem imputar raça/cor |
+| `RACACORMAE` ignorada | 1,3% dos registros de 2015–2024, com prevalência de baixo peso mais baixa que a dos demais grupos (seção 8) | categoria “ignorada” mantida separada, sem imputar raça/cor |
 | dado pessoal identificável | não há nome, CPF ou endereço; há datas e códigos de estabelecimento | removidos (seção 9) |
 
-## 6. Recorte temporal
+## 6. Recorte temporal e população do modelo
 
 <!-- auditoria:resumo-anos:inicio -->
 | ano | registros | peso válido | baixo peso | % baixo peso | Petrolina | % baixo peso Petrolina | MESPRENAT aus./ign. | ESCMAE2010 aus./ign. | RACACORMAE aus. | CODOCUPMAE aus. |
@@ -215,11 +221,57 @@ listadas entram na preparação da E3, dentro do pipeline, depois do split.
 - **Pandemia (2020 e 2021):** os dois anos ficam no desenvolvimento. A E5 vai comparar o desempenho por ano
   para ver se eles se comportam diferente.
 
-<!-- auditoria:recorte:inicio -->
-| conjunto | anos | registros com peso plausível | baixo peso | % baixo peso |
+### População do modelo
+
+A decisão acontece na **captação da gestante**, então o modelo só é treinado e avaliado com quem passaria
+por ela. Os critérios ficam em `src/data/populacao.py` e `configs/base.yaml` (`dados.populacao`) e são
+aplicados nesta ordem:
+
+<!-- auditoria:populacao:inicio -->
+| conjunto | anos | etapa | registros | % do período | baixo peso | % baixo peso |
+| --- | --- | --- | --- | --- | --- | --- |
+| desenvolvimento (treino + CV) | 2019–2023 | registros no período | 621.663 | 100,0% | — | — |
+| desenvolvimento (treino + CV) | 2019–2023 | + peso plausível (300–6.500 g) | 621.404 | 100,0% | 50.765 | 8,17% |
+| desenvolvimento (treino + CV) | 2019–2023 | + gestação única | 608.642 | 97,9% | 43.471 | 7,14% |
+| desenvolvimento (treino + CV) | 2019–2023 | + mês de início do pré-natal registrado (01–09) | 585.522 | 94,2% | 40.761 | 6,96% |
+| teste temporal (uso único) | 2024 | registros no período | 110.827 | 100,0% | — | — |
+| teste temporal (uso único) | 2024 | + peso plausível (300–6.500 g) | 110.759 | 99,9% | 9.643 | 8,71% |
+| teste temporal (uso único) | 2024 | + gestação única | 108.343 | 97,8% | 8.231 | 7,60% |
+| teste temporal (uso único) | 2024 | + mês de início do pré-natal registrado (01–09) | 104.919 | 94,7% | 7.732 | 7,37% |
+<!-- auditoria:populacao:fim -->
+
+Prevalência nos grupos retirados (desenvolvimento, só peso plausível):
+
+<!-- auditoria:excluidos:inicio -->
+| grupo | registros | % do desenvolvimento | baixo peso | % baixo peso |
 | --- | --- | --- | --- | --- |
-| desenvolvimento (treino + CV) | 2019–2023 | 621.404 | 50.765 | 8,17% |
-| teste temporal (uso único) | 2024 | 110.759 | 9.643 | 8,71% |
+| gestação múltipla (GRAVIDEZ 2 ou 3) | 12.209 | 2,0% | 7.250 | 59,38% |
+| tipo de gravidez ausente ou ignorado | 553 | 0,1% | 44 | 7,96% |
+| gestação única sem mês de início do pré-natal | 23.120 | 3,7% | 2.710 | 11,72% |
+| população do modelo | 585.522 | 94,2% | 40.761 | 6,96% |
+<!-- auditoria:excluidos:fim -->
+
+**Por que cada grupo sai:**
+
+- **Gestação múltipla.** A prevalência de baixo peso nesse grupo é muito maior que na gestação única
+  (tabela acima). Mantê-lo faria o modelo ganhar desempenho só por “descobrir” que gêmeo nasce com baixo
+  peso, algo que a equipe já sabe sem modelo. Cada bebê também gera um registro, e a mesma gestação aparece
+  mais de uma vez: os pares cairiam em folds diferentes e inflariam a validação (RQ-PRE-03), sem
+  identificador da mãe para usar `GroupKFold`. Com o corte, a ressalva sobre detectar a gestação múltipla
+  no ultrassom deixa de existir.
+- **Sem mês de início do pré-natal.** Quem passa pela captação tem esse mês conhecido. A ausência só
+  existe no registro retrospectivo, e, como o grupo tem prevalência maior, o modelo aprenderia a usar um
+  “ausente” que nunca aparece no momento da decisão. Ficam fora também as gestantes que não fizeram
+  pré-natal, que a decisão não alcança; isso é registrado como limitação.
+- **Tipo de gravidez ignorado.** Não é possível saber se a gestação é única.
+
+**Conjuntos finais** (população do modelo):
+
+<!-- auditoria:recorte:inicio -->
+| conjunto | anos | registros na população | baixo peso | % baixo peso |
+| --- | --- | --- | --- | --- |
+| desenvolvimento (treino + CV) | 2019–2023 | 585.522 | 40.761 | 6,96% |
+| teste temporal (uso único) | 2024 | 104.919 | 7.732 | 7,37% |
 <!-- auditoria:recorte:fim -->
 
 ## 7. Licença
@@ -245,38 +297,38 @@ listadas entram na preparação da E3, dentro do pipeline, depois do split.
 
 ## 8. Subgrupos e viés (RQ-ÉT-02)
 
-Tamanho e prevalência dos subgrupos que serão usados na análise de desempenho por grupo (E5). Período
-2015–2024, só registros com peso plausível. Cruzamentos com menos de 10 registros não são publicados.
+Tamanho e prevalência dos subgrupos que serão usados na análise de desempenho por grupo (E5), na
+**população do modelo** (seção 6), anos de desenvolvimento. Cruzamentos com menos de 10 registros não são
+publicados.
 
 <!-- auditoria:subgrupos:inicio -->
 | subgrupo | categoria | registros | % da base | baixo peso | % baixo peso |
 | --- | --- | --- | --- | --- | --- |
-| raça/cor da mãe | parda | 938.673 | 73,2% | 74.851 | 7,97% |
-| raça/cor da mãe | branca | 242.470 | 18,9% | 19.331 | 7,97% |
-| raça/cor da mãe | preta | 69.426 | 5,4% | 6.742 | 9,71% |
-| raça/cor da mãe | ignorada | 16.286 | 1,3% | 898 | 5,51% |
-| raça/cor da mãe | indígena | 11.407 | 0,9% | 810 | 7,10% |
-| raça/cor da mãe | amarela | 3.678 | 0,3% | 305 | 8,29% |
-| idade da mãe | 20–34 anos | 887.506 | 69,2% | 65.706 | 7,40% |
-| idade da mãe | até 19 anos | 221.111 | 17,2% | 20.605 | 9,32% |
-| idade da mãe | 35 anos ou mais | 173.319 | 13,5% | 16.626 | 9,59% |
-| idade da mãe | ignorada | < 10 | — | — | — |
-| mesorregião de residência | Metropolitana de Recife | 502.869 | 39,2% | 42.190 | 8,39% |
-| mesorregião de residência | Agreste Pernambucano | 330.117 | 25,8% | 25.524 | 7,73% |
-| mesorregião de residência | Mata Pernambucana | 182.258 | 14,2% | 13.377 | 7,34% |
-| mesorregião de residência | Sertão Pernambucano | 156.963 | 12,2% | 12.606 | 8,03% |
-| mesorregião de residência | São Francisco Pernambucano | 109.595 | 8,5% | 9.226 | 8,42% |
-| mesorregião de residência | ignorada | 138 | 0,0% | 14 | 10,14% |
-| município de residência | demais municípios | 1.219.106 | 95,1% | 97.330 | 7,98% |
-| município de residência | Petrolina | 62.834 | 4,9% | 5.607 | 8,92% |
+| raça/cor da mãe | parda | 426.214 | 72,8% | 29.535 | 6,93% |
+| raça/cor da mãe | branca | 110.534 | 18,9% | 7.471 | 6,76% |
+| raça/cor da mãe | preta | 34.986 | 6,0% | 2.921 | 8,35% |
+| raça/cor da mãe | ignorada | 6.313 | 1,1% | 318 | 5,04% |
+| raça/cor da mãe | indígena | 5.775 | 1,0% | 394 | 6,82% |
+| raça/cor da mãe | amarela | 1.700 | 0,3% | 122 | 7,18% |
+| idade da mãe | 20–34 anos | 407.501 | 69,6% | 26.024 | 6,39% |
+| idade da mãe | até 19 anos | 92.673 | 15,8% | 7.960 | 8,59% |
+| idade da mãe | 35 anos ou mais | 85.348 | 14,6% | 6.777 | 7,94% |
+| mesorregião de residência | Metropolitana de Recife | 220.622 | 37,7% | 15.702 | 7,12% |
+| mesorregião de residência | Agreste Pernambucano | 156.469 | 26,7% | 10.599 | 6,77% |
+| mesorregião de residência | Mata Pernambucana | 81.850 | 14,0% | 5.249 | 6,41% |
+| mesorregião de residência | Sertão Pernambucano | 74.731 | 12,8% | 5.410 | 7,24% |
+| mesorregião de residência | São Francisco Pernambucano | 51.798 | 8,8% | 3.795 | 7,33% |
+| mesorregião de residência | ignorada | 52 | 0,0% | < 10 | — |
+| município de residência | demais municípios | 555.675 | 94,9% | 38.482 | 6,93% |
+| município de residência | Petrolina | 29.847 | 5,1% | 2.279 | 7,64% |
 <!-- auditoria:subgrupos:fim -->
 
 **O que isso muda na modelagem:**
 
 - a prevalência difere entre os grupos de raça/cor e de idade da mãe. Um único limiar de decisão pode dar
   recall diferente para cada grupo, e isso será medido na E5;
-- “indígena” e “amarela” são menos de 1% da base cada. As métricas desses grupos terão intervalos de
-  confiança largos, e isso será reportado assim, sem esconder;
+- “indígena” e “amarela” têm cerca de 1% da base ou menos cada. As métricas desses grupos terão
+  intervalos de confiança largos, e isso será reportado assim, sem esconder;
 - a raça/cor da mãe é usada como atributo porque é fator de risco documentado. O modelo serve apenas para
   **priorizar** acompanhamento extra, nunca para negar atendimento (uso inadequado declarado na proposta).
 

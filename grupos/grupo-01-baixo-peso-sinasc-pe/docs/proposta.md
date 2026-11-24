@@ -16,16 +16,17 @@ A gestante com risco de ter um bebê de baixo peso só é identificada pela aval
 da Estratégia Saúde da Família (ESF), que tem pouco tempo para consultas extras. O SINASC acumula anos de
 nascimentos do território, mas esse histórico não é usado para priorizar o acompanhamento.
 **Fora do escopo:** prever o peso exato, diagnosticar condições clínicas, prever prematuridade ou óbito, usar
-exames ou prontuário, e uso clínico real (o estudo é retrospectivo).
+exames ou prontuário, e uso clínico real (o estudo é retrospectivo). Também ficam fora as gestações múltiplas,
+já reconhecidas como de risco sem modelo, e as gestantes sem pré-natal, que a decisão não alcança.
 
 ## 3. Pergunta de ML
 
-Com o que se sabe na captação da gestante (perfil da mãe, histórico obstétrico, gestação única ou múltipla,
-mês de início do pré-natal e região), é possível identificar quem terá um bebê com menos de 2.500 g melhor do
-que o preditor trivial, sem queda relevante de recall entre os subgrupos de raça/cor, idade e região?
+Em gestações únicas, com o que se sabe na captação (perfil da mãe, histórico obstétrico, mês de início do
+pré-natal e região), é possível identificar quem terá um bebê com menos de 2.500 g melhor do que o preditor
+trivial, sem queda relevante de recall entre os subgrupos de raça/cor, idade e região?
 **Hipótese falsificável:** o melhor modelo tem PR-AUC, em CV repetida, com IC 95% inteiramente acima de
-0,082 (a prevalência no desenvolvimento, que é a PR-AUC do baseline). Se o IC incluir 0,082, a hipótese é
-rejeitada.
+0,070 (a prevalência na população de desenvolvimento, que é a PR-AUC do baseline). Se o IC incluir 0,070, a
+hipótese é rejeitada.
 
 ## 4. Decisão
 
@@ -40,16 +41,17 @@ rejeitada.
 ## 5. Formulação técnica
 
 - **Tipo:** supervisionado, classificação binária desbalanceada. A unidade de análise é o nascido vivo.
-- **Alvo:** `baixo_peso = 1` se `PESO < 2500` g (8,17% no desenvolvimento).
-- **Métrica principal:** **PR-AUC**. Um modelo que sempre responde “não” já passaria de 91% de acurácia sem
+- **População:** gestações únicas com mês de início do pré-natal registrado (quem passa pela captação).
+- **Alvo:** `baixo_peso = 1` se `PESO < 2500` g (6,96% na população de desenvolvimento).
+- **Métrica principal:** **PR-AUC**. Um modelo que sempre responde “não” já passaria de 93% de acurácia sem
   achar nenhum caso. **Secundárias:** recall e precisão no limiar, AUC-ROC, Brier e recall por subgrupo.
 
 ## 6. Dados
 
 - **Fonte:** SINASC, Ministério da Saúde/DATASUS (`DNPE{ano}.dbc`), com dicionário oficial. Licença CC BY-ND
   3.0 do portal; a base não é redistribuída. Análise na E2.
-- **Recorte:** Pernambuco. Desenvolvimento em 2019–2023 (621.404 registros) e **teste temporal em 2024**
-  (110.759), usado uma única vez no final.
+- **Recorte:** Pernambuco. Desenvolvimento em 2019–2023 (585.522 registros na população) e **teste temporal
+  em 2024** (104.919), usado uma única vez no final.
 - **LGPD:** a base é pública e anonimizada. Datas, hora, estabelecimento e naturalidade são removidos.
 - **Plano B:** acesso pelo OpenDataSUS se o FTP falhar; tema reserva: hospitalização por dengue (SINAN, ODS 3.3).
 
@@ -60,7 +62,7 @@ rejeitada.
 | base indisponível | baixa | alto | download por script com SHA-256 registrado |
 | alvo mal definido | baixa | médio | critério da OMS; pesos fora de 300–6.500 g excluídos |
 | desbalanceamento | certa | médio | PR-AUC; `class_weight` ou limiar ajustado dentro da CV |
-| vazamento | alta | alto | só variáveis da captação: saem dados do parto, nº de consultas e sexo do bebê (lista em `src/data/esquema.py`) |
+| vazamento | alta | alto | só variáveis da captação: saem dados do parto, nº de consultas e sexo do bebê (lista em `src/data/esquema.py`); gêmeos fora da população, para não vazar entre folds |
 | viés entre subgrupos | média | alto | métricas por raça/cor, idade e região (E5) |
 | mudança de distribuição | média | médio | teste temporal em 2024; desempenho por ano |
 | reidentificação (LGPD) | baixa | alto | remover datas, hora e estabelecimento; município agregado por região; nenhuma célula publicada com menos de 10 registros |
