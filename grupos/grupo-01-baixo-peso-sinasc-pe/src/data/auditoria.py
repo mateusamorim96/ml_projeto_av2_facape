@@ -5,7 +5,7 @@ Uso:
     python -m src.data.auditoria --config configs/base.yaml
 
 Saidas:
-  * reports/tables/e2-*.csv  -> tabelas em formato de maquina;
+  * reports/tables/tabela-auditoria-*.csv -> tabelas em formato de maquina;
   * docs/dicionario-de-dados.md -> os blocos entre marcadores
     `<!-- auditoria:NOME:inicio -->` e `<!-- auditoria:NOME:fim -->` sao
     reescritos a cada execucao. Nenhum numero do dicionario e digitado a mao.
@@ -22,7 +22,7 @@ import pandas as pd
 from src.config import RAIZ, carregar_config
 from src.data.carregar import carregar_municipios, carregar_sinasc
 from src.data.download import ler_registro
-from src.data.esquema import COLUNAS, POR_NOME, Coluna
+from src.data.esquema import COLUNAS, POR_NOME, Coluna, origem
 
 DICIONARIO = RAIZ / "docs" / "dicionario-de-dados.md"
 INTERNAS = ("CONTADOR", "NUMEROLOTE", "DTCADASTRO", "DTRECEBIM", "DTRECORIGA", "DIFDATA",
@@ -142,6 +142,7 @@ def tabela_variaveis(df: pd.DataFrame) -> pd.DataFrame:
     for coluna in sorted(COLUNAS, key=lambda c: ordem_uso[c.uso]):
         if coluna.nome not in df.columns:
             linhas.append({"coluna": coluna.nome, "tipo": coluna.tipo, "unidade": coluna.unidade,
+                           "origem": origem(coluna.nome),
                            "faixa observada": "ausente nos arquivos", "% nulos": "—",
                            "% ignorado": "—", "descrição": coluna.descricao, "uso": coluna.uso,
                            "motivo / observação": coluna.motivo})
@@ -153,6 +154,7 @@ def tabela_variaveis(df: pd.DataFrame) -> pd.DataFrame:
             "coluna": f"`{coluna.nome}`",
             "tipo": coluna.tipo,
             "unidade": coluna.unidade,
+            "origem": origem(coluna.nome),
             "faixa observada": faixa_observada(serie, coluna),
             "% nulos": fmt_pct(nulos),
             "% ignorado": fmt_pct(ignorados) if coluna.ignorado else "—",
@@ -162,7 +164,8 @@ def tabela_variaveis(df: pd.DataFrame) -> pd.DataFrame:
         })
     nao_documentadas = [c for c in df.columns if c != "ANO" and c not in POR_NOME]
     for nome in nao_documentadas:
-        linhas.append({"coluna": f"`{nome}`", "tipo": "?", "unidade": "?", "faixa observada": "?",
+        linhas.append({"coluna": f"`{nome}`", "tipo": "?", "unidade": "?", "origem": origem(nome),
+                       "faixa observada": "?",
                        "% nulos": fmt_pct(100 * df[nome].isna().mean()), "% ignorado": "—",
                        "descrição": "não documentada no dicionário oficial", "uso": "descartada",
                        "motivo / observação": "sem documentação"})
@@ -293,7 +296,7 @@ def main(argv: list[str] | None = None) -> int:
     pasta = RAIZ / cfg["saidas"]["tabelas"]
     pasta.mkdir(parents=True, exist_ok=True)
     for nome, tabela in tabelas.items():
-        tabela.to_csv(pasta / f"e2-{nome}.csv", index=False)
+        tabela.to_csv(pasta / f"tabela-auditoria-{nome}.csv", index=False)
     blocos = {nome: tabela_md(tabela) for nome, tabela in tabelas.items()}
     blocos["alvo"] = resumo_alvo(df, cfg)
     atualizar_blocos(DICIONARIO, blocos)

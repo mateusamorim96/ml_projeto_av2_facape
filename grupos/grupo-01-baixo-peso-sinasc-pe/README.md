@@ -54,6 +54,11 @@ Proposta completa: [`docs/proposta.md`](docs/proposta.md).
   do SUS declara CC BY-ND 3.0 para o site inteiro. O projeto não redistribui a
   base, só publica código e resultados agregados com atribuição ao Ministério da
   Saúde. A análise completa está na seção 7 do dicionário de dados.
+- **Base legal de uso:** dados abertos publicados pelo Ministério da Saúde
+  (Política de Dados Abertos, Decreto 8.777/2016), já anonimizados na origem.
+  Dados anonimizados não são considerados dados pessoais pela LGPD (Lei
+  13.709/2018, art. 12). Quase-identificadores (datas, hora, estabelecimento)
+  são removidos antes de qualquer análise.
 - **Volume:** 1.282.496 registros × 61 colunas (PE, 2015–2024).
 - **Recorte:** desenvolvimento em 2019–2023 (621.404 registros) e teste temporal
   em 2024 (110.759 registros), usado uma única vez no final.

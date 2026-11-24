@@ -152,6 +152,34 @@ COLUNAS: tuple[Coluna, ...] = (
     Coluna("CODUFNATU", "UF de naturalidade da mãe", "categorica", "descartada", motivo=NATURALIDADE),
 )
 
+# Origem de cada coluna: bloco da Declaracao de Nascido Vivo (DN) em que o campo
+# e preenchido, ou campo gerado pelo sistema -- conforme "Estrutura do SINASC".
+_ORIGENS: dict[str, tuple[str, ...]] = {
+    "DN, bloco I (recém-nascido)": ("DTNASC", "HORANASC", "SEXO", "RACACOR", "PESO", "APGAR1", "APGAR5",
+                                    "IDANOMAL"),
+    "DN, bloco II (local do parto)": ("LOCNASC", "CODESTAB", "CODMUNNASC"),
+    "DN, bloco III (mãe)": ("ESCMAE", "ESCMAE2010", "SERIESCMAE", "CODOCUPMAE", "DTNASCMAE", "IDADEMAE",
+                            "NATURALMAE", "ESTCIVMAE", "RACACORMAE", "CODMUNRES"),
+    "DN, bloco IV (pai)": ("IDADEPAI",),
+    "DN, bloco V (gestação e parto)": ("QTDGESTANT", "QTDPARTNOR", "QTDPARTCES", "QTDFILVIVO", "QTDFILMORT",
+                                       "DTULTMENST", "GESTACAO", "SEMAGESTAC", "TPMETESTIM", "CONSULTAS",
+                                       "CONSPRENAT", "MESPRENAT", "GRAVIDEZ", "TPAPRESENT", "STTRABPART",
+                                       "PARTO", "STCESPARTO", "TPNASCASSI"),
+    "DN, bloco VI (anomalia)": ("CODANOMAL",),
+    "DN, bloco VII (preenchimento)": ("DTDECLARAC", "TPFUNCRESP", "TPDOCRESP"),
+    "calculada pelo sistema": ("ESCMAEAGR1", "TPROBSON", "PARIDADE", "KOTELCHUCK", "CODUFNATU",
+                               "CODMUNNATU", "CODPAISRES"),
+    "interna do sistema": ("STDNEPIDEM", "STDNNOVA", "DTRECORIGA", "DIFDATA", "DTRECEBIM", "VERSAOSIST",
+                           "NUMEROLOTE", "DTCADASTRO", "ORIGEM"),
+}
+ORIGEM = {nome: origem for origem, nomes in _ORIGENS.items() for nome in nomes}
+
+
+def origem(nome: str) -> str:
+    """Bloco da DN ou origem sistemica; colunas fora do dicionario oficial sao sinalizadas."""
+    return ORIGEM.get(nome, "arquivo DATASUS, ausente do dicionário oficial")
+
+
 POR_NOME = {c.nome: c for c in COLUNAS}
 ATRIBUTOS = tuple(c.nome for c in COLUNAS if c.uso == "atributo")
 DESCARTADAS = tuple(c.nome for c in COLUNAS if c.uso == "descartada")
