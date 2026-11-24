@@ -1,0 +1,18 @@
+subgrupo,categoria,registros,% da base,baixo peso,% baixo peso
+raça/cor da mãe,parda,426.214,"72,8%",29.535,"6,93%"
+raça/cor da mãe,branca,110.534,"18,9%",7.471,"6,76%"
+raça/cor da mãe,preta,34.986,"6,0%",2.921,"8,35%"
+raça/cor da mãe,ignorada,6.313,"1,1%",318,"5,04%"
+raça/cor da mãe,indígena,5.775,"1,0%",394,"6,82%"
+raça/cor da mãe,amarela,1.700,"0,3%",122,"7,18%"
+idade da mãe,20–34 anos,407.501,"69,6%",26.024,"6,39%"
+idade da mãe,até 19 anos,92.673,"15,8%",7.960,"8,59%"
+idade da mãe,35 anos ou mais,85.348,"14,6%",6.777,"7,94%"
+mesorregião de residência,Metropolitana de Recife,220.622,"37,7%",15.702,"7,12%"
+mesorregião de residência,Agreste Pernambucano,156.469,"26,7%",10.599,"6,77%"
+mesorregião de residência,Mata Pernambucana,81.850,"14,0%",5.249,"6,41%"
+mesorregião de residência,Sertão Pernambucano,74.731,"12,8%",5.410,"7,24%"
+mesorregião de residência,São Francisco Pernambucano,51.798,"8,8%",3.795,"7,33%"
+mesorregião de residência,ignorada,52,"0,0%",< 10,—
+município de residência,demais municípios,555.675,"94,9%",38.482,"6,93%"
+município de residência,Petrolina,29.847,"5,1%",2.279,"7,64%"

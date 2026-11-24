@@ -1,0 +1,9 @@
+conjunto,anos,etapa,registros,% do período,baixo peso,% baixo peso
+desenvolvimento (treino + CV),2019–2023,registros no período,621.663,"100,0%",—,—
+desenvolvimento (treino + CV),2019–2023,+ peso plausível (300–6.500 g),621.404,"100,0%",50.765,"8,17%"
+desenvolvimento (treino + CV),2019–2023,+ gestação única,608.642,"97,9%",43.471,"7,14%"
+desenvolvimento (treino + CV),2019–2023,+ mês de início do pré-natal registrado (01–09),585.522,"94,2%",40.761,"6,96%"
+teste temporal (uso único),2024,registros no período,110.827,"100,0%",—,—
+teste temporal (uso único),2024,+ peso plausível (300–6.500 g),110.759,"99,9%",9.643,"8,71%"
+teste temporal (uso único),2024,+ gestação única,108.343,"97,8%",8.231,"7,60%"
+teste temporal (uso único),2024,+ mês de início do pré-natal registrado (01–09),104.919,"94,7%",7.732,"7,37%"

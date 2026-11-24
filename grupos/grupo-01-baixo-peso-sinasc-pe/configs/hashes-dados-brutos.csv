@@ -1,0 +1,12 @@
+arquivo,bytes,sha256,url,registrado_em
+DNPE2015.dbc,10353625,3d249eeea470260075d037f27e14bedba8e7ab155d35f160b2a385b5503aa8fa,ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE2015.dbc,2026-11-23
+DNPE2016.dbc,6624317,3505bad6c6c32b1b8c66c26d6e8b0c3f102a3af8785e4ba07347080ae5ec946c,ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE2016.dbc,2026-11-23
+DNPE2017.dbc,9903887,42c4b10ae8700054cbed6f22637a9e53bc574a1e057f9c9abc9ba5b2aa24dd20,ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE2017.dbc,2026-11-23
+DNPE2018.dbc,6942740,a366c341dc93731df84633d3543ba51f069d50701ed2023b8822538325d160f5,ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE2018.dbc,2026-11-23
+DNPE2019.dbc,6701467,980686801076d2acd7fb9ec67b4d46b971ed48b12e45070dab3e6d2d0174c9e0,ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE2019.dbc,2026-11-23
+DNPE2020.dbc,6445729,70a77c70b891a7255dade1bdf7213c9efcb4a45eb3b762594ffc98335eaadd58,ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE2020.dbc,2026-11-23
+DNPE2021.dbc,6331295,7c9e782e2616a4618a78794cedeefbd60469cee0ed9905ffbeee760763377d59,ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE2021.dbc,2026-11-23
+DNPE2022.dbc,5894169,0541cb17fc56582266b429406990e5da1e153917084db9b88d9a9dd93742efae,ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE2022.dbc,2026-11-23
+DNPE2023.dbc,5810363,ec0915c38460490f7f568acc3564c3e38a9a0e347e46f173634b7d0956547817,ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE2023.dbc,2026-11-23
+DNPE2024.dbc,5544754,413ab891ee289bd50d5078de2040565aaf411d1db1dd14797ec20eb733bd3656,ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE2024.dbc,2026-11-23
+ibge-municipios-pe.json,82359,61bcc46787c910cc212be75f5e91bfd5f1880f9f8869d20051802c54d0926cb5,https://servicodados.ibge.gov.br/api/v1/localidades/estados/26/municipios,2026-11-23

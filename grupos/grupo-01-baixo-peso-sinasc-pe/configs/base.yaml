@@ -1,0 +1,76 @@
+# Configuração base do pipeline — G01
+# Todos os caminhos são relativos à raiz da pasta do grupo.
+
+project:
+  grupo: G01
+  nome: baixo-peso-sinasc-pe
+  ods: 3
+  meta: "3.2"
+  seed: 42
+
+dados:
+  raw: data/raw/            # ignorado pelo Git
+  processed: data/processed/
+  fonte:
+    sinasc_url: "ftp://ftp.datasus.gov.br/dissemin/publicos/SINASC/1996_/Dados/DNRES/DNPE{ano}.dbc"
+    ibge_url: "https://servicodados.ibge.gov.br/api/v1/localidades/estados/26/municipios"
+    ibge_arquivo: ibge-municipios-pe.json
+    hashes: configs/hashes-dados-brutos.csv   # SHA-256 de cada arquivo bruto (versionado)
+  arquivo: "DNPE{ano}.dbc"  # SINASC por UF de residência (Pernambuco)
+  anos: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]  # anos definitivos auditados
+  anos_desenvolvimento: [2019, 2020, 2021, 2022, 2023]  # treino + validação cruzada
+  ano_teste: 2024           # teste temporal externo, usado uma única vez no final
+  populacao:                # quem passa pela decisão (src/data/populacao.py; dicionário, seção 6)
+    gravidez: ["1"]         # só gestação única
+    exigir_mesprenat: true  # mês de início do pré-natal registrado (01–09)
+  alvo: baixo_peso          # 1 se PESO < 2500 g
+  limiar_peso_g: 2500
+  municipio_local: "261110" # Petrolina (IBGE, 6 dígitos)
+  coluna_tempo: ANO         # derivada do nome do arquivo
+  estratificar: true        # folds de CV estratificados pelo alvo (dentro do desenvolvimento)
+
+preprocessamento:
+  # decisões que precisam de justificativa em docs/decisoes-tecnicas.md
+  imputacao_numerica: mediana      # mediana | media | constante
+  imputacao_categorica: moda
+  escalonamento: standard          # standard | minmax | none
+  one_hot_min_frequency: 5
+
+validacao:
+  esquema: stratified-k-fold       # stratified-k-fold | k-fold | time-series | group
+  n_splits: 5
+  n_repeats: 10
+  metrica_principal: average_precision   # PR-AUC (classe positiva ≈ 7% na população)
+  metrica_secundaria: recall
+
+modelos:
+  baseline:
+    tipo: dummy                    # dummy | logistic | decision-tree
+    parametros: {}
+  familia_1:
+    tipo: preencher
+    parametros:
+      preencher: null
+  familia_2:
+    tipo: preencher
+    parametros: {}
+  familia_3:
+    tipo: preencher
+    parametros: {}
+
+busca:
+  metodo: grid                     # grid | random
+  n_iter: 30
+  cv_interna: 3
+  scoring: preencher
+
+saidas:
+  tabelas: reports/tables/
+  figuras: reports/figures/
+  ambiente: reports/environment.json
+  runs: experiments/runs.csv
+
+teste_estatistico:
+  metodo: preencher                # wilcoxon | mcnemar | friedman-nemenyi
+  alpha: 0.05
+  correcao: preencher              # bonferroni | holm | none
