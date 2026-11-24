@@ -19,8 +19,9 @@ Trabalho individual.
 - **Meta:** 3.2 — acabar com as mortes evitáveis de recém-nascidos e crianças
   menores de 5 anos.
 - **Problema:** o baixo peso ao nascer (< 2.500 g) é um dos principais
-  determinantes da mortalidade neonatal. Em 2023, 8,61% dos nascidos vivos de
-  mães residentes em Pernambuco tiveram baixo peso. Em Petrolina foram 9,22%
+  determinantes da mortalidade neonatal. Em 2024, 8,71% dos nascidos vivos de
+  mães residentes em Pernambuco tiveram baixo peso. Em Petrolina foram 9,48%, e
+  o município ficou acima da média do estado em todos os anos de 2015 a 2024
   (SINASC/DATASUS). O projeto investiga se dá para identificar as gestantes de
   maior risco já no início do pré-natal.
 - **Público/beneficiário:** equipes da Estratégia Saúde da Família (ESF) e
@@ -38,7 +39,7 @@ Proposta completa: [`docs/proposta.md`](docs/proposta.md).
 - **Custo do falso positivo:** uma consulta extra desnecessária. Custo baixo.
 - **Custo do falso negativo:** a gestante de risco fica sem acompanhamento
   reforçado. Custo alto.
-- **Métrica principal:** PR-AUC. Com cerca de 8,6% de positivos, um modelo que
+- **Métrica principal:** PR-AUC. Com cerca de 8% de positivos, um modelo que
   sempre responde “não” já teria mais de 91% de acurácia, por isso a acurácia
   não serve como métrica.
 

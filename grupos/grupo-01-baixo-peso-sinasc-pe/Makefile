@@ -1,6 +1,7 @@
 # Atalhos do grupo G01. `make` sem argumento mostra a ajuda.
 .PHONY: help setup dados auditoria pipeline docker docker-build validar entrega limpar
 
+SHELL := /bin/bash   # o alvo validar usa `read -d ''`
 PY ?= python3
 CONFIG ?= configs/base.yaml
 IMAGEM ?= grupo-01-baixo-peso-sinasc-pe:local
@@ -38,7 +39,14 @@ docker:
 # valida uma cópia só com o que vai para o Git (o mesmo que a CI vê);
 # o check_entrega.py varre o disco e acusaria .venv/, data/raw/ e caches ignorados
 validar:
-	$(PY) tools/validar_limpo.py --entrega $(E)
+	@test -n "$(E)" || { echo "uso: make validar E=E2"; exit 2; }
+	@tmp=$$(mktemp -d) && raiz=$$(git rev-parse --show-toplevel) && \
+	git -C "$$raiz" ls-files -z --cached --others --exclude-standard | \
+	while IFS= read -r -d '' f; do \
+		if [ -f "$$raiz/$$f" ]; then mkdir -p "$$tmp/$$(dirname "$$f")" && cp "$$raiz/$$f" "$$tmp/$$f"; fi; \
+	done; \
+	(cd "$$tmp" && $(PY) scripts/check_entrega.py --grupo grupo-01 --entrega $(E)); st=$$?; \
+	rm -rf "$$tmp"; exit $$st
 
 # validação direta na pasta (inclui arquivos ignorados pelo Git)
 entrega:
