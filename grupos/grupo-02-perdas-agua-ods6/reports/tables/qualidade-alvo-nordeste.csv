@@ -1,0 +1,25 @@
+metrica,valor,descricao
+municipios_arquivo_t_brasil,5241,linhas com codigo IBGE na aba 'Estruturais e Operacionais'
+municipios_arquivo_t_regiao,1668,"idem, so Nordeste"
+municipios_arquivo_t1_brasil,5144,linhas com codigo IBGE na aba 'Indicadores de Gestão'
+duplicatas_codigo_t,0,codigos IBGE repetidos em t
+duplicatas_codigo_t1,0,codigos IBGE repetidos em t+1
+alvo_t_nao_numerico_regiao,41,alvo de t vazio ou texto 'Nao Calc.'
+alvo_t_texto: Não Calc.- Dados Não Inf.,31,detalhe do item anterior
+alvo_t_texto: Não Calc.- Div/0,10,detalhe do item anterior
+alvo_t_fora_faixa_regiao,2,alvo de t fora de 0-100%
+sem_linha_em_t1_regiao,172,municipios da regiao em t ausentes do arquivo de t+1
+alvo_t1_nao_numerico_regiao,9,"presentes em t+1, mas sem valor numerico do alvo"
+alvo_t1_fora_faixa_brasil,0,alvo de t+1 fora de 0-100%
+pares_validos_regiao,1458,alvo numerico e na faixa nos dois anos
+pares_extremos,20,alvo <= 1.0% ou >= 95.0% em algum ano
+pares_salto,65,variacao absoluta > 30.0 p.p. entre os anos
+municipios_arquivo_t1_AL,97,cobertura de t+1 por UF
+municipios_arquivo_t1_BA,406,cobertura de t+1 por UF
+municipios_arquivo_t1_CE,182,cobertura de t+1 por UF
+municipios_arquivo_t1_MA,175,cobertura de t+1 por UF
+municipios_arquivo_t1_PB,214,cobertura de t+1 por UF
+municipios_arquivo_t1_PE,180,cobertura de t+1 por UF
+municipios_arquivo_t1_PI,36,cobertura de t+1 por UF
+municipios_arquivo_t1_RN,163,cobertura de t+1 por UF
+municipios_arquivo_t1_SE,75,cobertura de t+1 por UF
