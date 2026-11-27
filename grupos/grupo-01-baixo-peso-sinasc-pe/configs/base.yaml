@@ -31,10 +31,17 @@ dados:
 
 preprocessamento:
   # decisões que precisam de justificativa em docs/decisoes-tecnicas.md
-  imputacao_numerica: mediana      # mediana | media | constante
-  imputacao_categorica: moda
+  imputacao_numerica: mediana      # mediana | media
+  imputacao_categorica: constante  # constante ("ignorado") | moda — ver docs/decisoes-tecnicas.md
   escalonamento: standard          # standard | minmax | none
   one_hot_min_frequency: 5
+  idade_splines: {nos: 5, grau: 3} # curva em U da idade da mãe (figura 3 da EDA)
+  historico_teto:                  # percentil 99 no desenvolvimento; acima vira "N+" (figura 5 da EDA)
+    QTDGESTANT: 6
+    QTDPARTNOR: 5
+    QTDPARTCES: 2
+    QTDFILVIVO: 5
+    QTDFILMORT: 2
 
 validacao:
   esquema: stratified-k-fold       # stratified-k-fold | k-fold | time-series | group
