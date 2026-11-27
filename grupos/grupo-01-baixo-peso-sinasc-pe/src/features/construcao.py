@@ -26,7 +26,11 @@ def contagem_com_teto(valores: pd.Series, teto: int) -> pd.Series:
     """0, 1, ..., teto-1 e 'teto+' como texto; ausente continua ausente."""
     numeros = pd.to_numeric(valores, errors="coerce")
     rotulo = numeros.clip(upper=teto).astype("Int64").astype("string")
-    return rotulo.mask(numeros >= teto, f"{teto}+")
+    # fillna(False): sem isso, ausente >= teto da <NA> e o mask o trataria como "teto+"
+    rotulo = rotulo.mask((numeros >= teto).fillna(False), f"{teto}+")
+    if int(rotulo.isna().sum()) != int(numeros.isna().sum()):
+        raise ValueError("contagem_com_teto alterou a quantidade de ausentes")
+    return rotulo
 
 
 def grupo_cbo(codigo: pd.Series) -> pd.Series:

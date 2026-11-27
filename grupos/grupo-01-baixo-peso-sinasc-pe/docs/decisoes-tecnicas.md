@@ -40,9 +40,9 @@ Decisões tomadas na E2. As evidências estão em `docs/dicionario-de-dados.md` 
 | Decisão | Alternativa rejeitada | Evidência |
 | ------- | --------------------- | --------- |
 | Desenvolvimento em 2019–2023 e teste temporal em 2024, usado uma única vez | holdout aleatório de 20% sobre todos os anos | a prevalência sobe de cerca de 7,8% (2015–2020) para cerca de 8,7% (2022–2024) (`tabela-auditoria-resumo-anos.csv`). O teste temporal reproduz o uso real: treinar com o passado e prever o ano seguinte |
-| Excluir 2015–2018 da modelagem (só auditoria e EDA) | usar os 10 anos | anos mais distantes do patamar atual de prevalência; a população de desenvolvimento já tem 585.522 registros (`tabela-auditoria-recorte.csv`) |
+| Excluir 2015–2018 da modelagem (só auditoria e EDA) | usar os 10 anos | anos mais distantes do patamar atual de prevalência; a população de desenvolvimento já tem 585.505 registros (`tabela-auditoria-recorte.csv`) |
 | População = gestação única com mês de início do pré-natal registrado | modelar todos os nascidos vivos | é quem passa pela decisão na captação (`src/data/populacao.py`; fluxo em `tabela-auditoria-populacao.csv`) |
-| Excluir gestações múltiplas | mantê-las e agrupar os gêmeos com `GroupKFold` | 59,38% de baixo peso contra 7,14% na gestação única (`tabela-auditoria-excluidos.csv`): o modelo ganharia desempenho com um risco que a equipe já reconhece, já que a gestação gemelar é de alto risco por definição (Ministério da Saúde, *Manual de gestação de alto risco*, 2022, cap. 17). Os registros do mesmo parto vazariam entre folds, e não há identificador da mãe para agrupar |
+| Excluir gestações múltiplas | mantê-las e agrupar os gêmeos com `GroupKFold` | 59,39% de baixo peso contra 7,14% na gestação única (`tabela-auditoria-excluidos.csv`): o modelo ganharia desempenho com um risco que a equipe já reconhece, já que a gestação gemelar é de alto risco por definição (Ministério da Saúde, *Manual de gestação de alto risco*, 2022, cap. 17). Os registros do mesmo parto vazariam entre folds, e não há identificador da mãe para agrupar |
 | Excluir registros sem mês de início do pré-natal | imputar `MESPRENAT` | prevalência de 11,72% no grupo (`tabela-auditoria-excluidos.csv`): o “ausente” carrega sinal, mas não existe na captação, em que o mês é conhecido |
 | Manter 2020 e 2021 (pandemia) no desenvolvimento | excluir os dois anos | prevalência e completude sem quebra nesses anos (`tabela-auditoria-resumo-anos.csv`); o desempenho por ano será comparado na E5 |
 | Só atributos conhecidos na captação da gestante | usar todas as colunas da DN | regra de vazamento; colunas excluídas e motivo de cada uma em `src/data/esquema.py` e na tabela de variáveis do dicionário |
@@ -63,10 +63,10 @@ As figuras e os dados de cada uma estão em `reports/figures/figura-eda-*.png` e
 | Limpeza por registro (duplicatas, população, alvo, códigos “ignorado” e valores implausíveis → ausente) antes do split; tudo que aprende dos dados fica no `Pipeline` | limpar e imputar no conjunto inteiro | as regras de `src/data/preparar.py` não calculam nenhuma estatística, então não vazam; imputação, splines e one-hot são ajustados só no treino de cada fold (`src/features/preprocessamento.py`) |
 | Split temporal gravado na etapa `dados`: `desenvolvimento.pkl` (2019–2023) e `teste.pkl` (2024) | separar o teste só na modelagem | o teste fica isolado desde a preparação, e a etapa `features` falha se aparecer um ano fora do desenvolvimento |
 | Checagem automática de vazamento no pipeline | conferir a lista de colunas à mão | `conferir_vazamento` em `src/pipeline.py` falha se uma coluna descartada, de filtro, o alvo ou o ano chegar ao modelo |
-| Não descartar registros com atributo ausente | remover linhas incompletas | menos de 4% de ausentes, mas com prevalência menor (5,0%–5,8% contra 6,96%): descartar tiraria um grupo de risco diferente (figura 2) |
+| Não descartar registros com atributo ausente | remover linhas incompletas | menos de 4% de ausentes, mas com prevalência menor (5,0%–5,8% contra 6,96%; a exceção é a idade, com só 12 ausentes): descartar tiraria um grupo de risco diferente (figura 2) |
 | Categórico ausente → categoria própria `ignorado` | imputar a moda | “ignorado” tem a menor prevalência em escolaridade, raça/cor e ocupação (figuras 2 e 6); a moda o misturaria a um grupo de risco diferente |
 | Idade da mãe com splines (5 nós, grau 3) | idade linear ou em faixas fixas | curva em U: 15,19% aos 13 anos, 5,88% aos 26, 8,52% aos 40 (figura 3) |
-| `MESPRENAT` como categoria | mês como número | sobe de 5,43% (mês 1) para 8,66% (mês 5) e cai para 3,88% (mês 9), sem relação linear (figura 4) |
+| `MESPRENAT` como categoria | mês como número | sobe de 5,43% (mês 1) para 8,66% (mês 5) e cai para 3,87% (mês 9), sem relação linear (figura 4) |
 | Histórico obstétrico com teto no percentil 99 e como categoria | contagens como número | relações em U (primeira gestação 8,15%, uma ou duas anteriores cerca de 5,97%) e caudas raras (figura 5) |
 | Ocupação pelo grande grupo da CBO, com os códigos especiais `9999xx` separados | 1º dígito para todos os códigos | o 1º dígito juntaria os códigos especiais ao grande grupo 9 (manutenção); eles têm prevalências entre 6,47% e 9,59% (figura 6) |
 | Desbalanceamento tratado no modelo (pesos de classe ou limiar), sem reamostrar | sobreamostragem (SMOTE ou similar) | cerca de 7% de positivos e 585.505 registros (figura 1): há casos positivos suficientes, e a reamostragem distorceria a calibração das probabilidades. A escolha final fica para a E4 |
@@ -82,5 +82,20 @@ As figuras e os dados de cada uma estão em `reports/figures/figura-eda-*.png` e
 
 ## 6. Riscos residuais
 
-- preencher (o que ainda pode invalidar o resultado)
-- preencher (o que faríamos com mais tempo/dados)
+**O que ainda pode invalidar o resultado** (atualizado a cada entrega):
+
+- **Mesma mãe em anos diferentes.** O SINASC não tem identificador da mãe, então irmãos nascidos em anos
+  diferentes podem cair em folds distintos da validação cruzada. O efeito tende a ser pequeno, porque cada
+  mãe tem poucos partos no período, mas não dá para usar `GroupKFold` (RQ-PRE-03). O teste temporal em 2024
+  reduz esse risco na avaliação final, mas não o elimina.
+- **Registro retrospectivo.** As variáveis da captação foram registradas no parto. A qualidade do que se
+  declara no parto pode ser diferente do que se registraria no início do pré-natal.
+- **Mudança de distribuição.** A prevalência sobe dentro do próprio desenvolvimento (figura 1 da EDA). Um
+  modelo ajustado nos anos anteriores pode subestimar o risco em 2024.
+- **Códigos especiais de ocupação.** O significado de `999991` a `999994` não foi confirmado no dicionário
+  oficial. Eles entram como categorias, mas não podem ser interpretados no artigo.
+
+**O que faríamos com mais tempo ou dados:** vincular o SINASC ao SIM, para incluir os óbitos neonatais;
+usar dados de pré-natal da atenção primária (e-SUS APS), registrados no momento da captação, o que
+exigiria acesso autorizado, porque não são abertos em nível individual; e testar o modelo em outros
+estados do Nordeste.

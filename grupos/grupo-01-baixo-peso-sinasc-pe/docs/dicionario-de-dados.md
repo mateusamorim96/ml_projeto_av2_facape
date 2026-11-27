@@ -144,7 +144,7 @@ dentro da população.
 
 <!-- auditoria:alvo:inicio -->
 - **Período auditado:** 2015–2024 (10 anos), 1.282.496 registros brutos e 1.281.940 com peso plausível, dos quais 102.937 com baixo peso (8,03%).
-- **População do modelo, desenvolvimento (2019–2023):** 585.522 registros, 40.761 com baixo peso (6,96%) e 544.761 sem (93,04%). Razão de desbalanceamento ≈ 1:13. PR-AUC do baseline (prevalência) ≈ 0,070.
+- **População do modelo, desenvolvimento (2019–2023):** 585.505 registros, 40.760 com baixo peso (6,96%) e 544.745 sem (93,04%). Razão de desbalanceamento ≈ 1:13. PR-AUC do baseline (prevalência) ≈ 0,070.
 <!-- auditoria:alvo:fim -->
 
 - **Por que não é trivial:**
@@ -230,14 +230,14 @@ aplicados nesta ordem:
 <!-- auditoria:populacao:inicio -->
 | conjunto | anos | etapa | registros | % do período | baixo peso | % baixo peso |
 | --- | --- | --- | --- | --- | --- | --- |
-| desenvolvimento (treino + CV) | 2019–2023 | registros no período | 621.663 | 100,0% | — | — |
-| desenvolvimento (treino + CV) | 2019–2023 | + peso plausível (300–6.500 g) | 621.404 | 100,0% | 50.765 | 8,17% |
-| desenvolvimento (treino + CV) | 2019–2023 | + gestação única | 608.642 | 97,9% | 43.471 | 7,14% |
-| desenvolvimento (treino + CV) | 2019–2023 | + mês de início do pré-natal registrado (01–09) | 585.522 | 94,2% | 40.761 | 6,96% |
-| teste temporal (uso único) | 2024 | registros no período | 110.827 | 100,0% | — | — |
-| teste temporal (uso único) | 2024 | + peso plausível (300–6.500 g) | 110.759 | 99,9% | 9.643 | 8,71% |
-| teste temporal (uso único) | 2024 | + gestação única | 108.343 | 97,8% | 8.231 | 7,60% |
-| teste temporal (uso único) | 2024 | + mês de início do pré-natal registrado (01–09) | 104.919 | 94,7% | 7.732 | 7,37% |
+| desenvolvimento (treino + CV) | 2019–2023 | registros no período (sem duplicatas) | 621.645 | 100,0% | — | — |
+| desenvolvimento (treino + CV) | 2019–2023 | + peso plausível (300–6.500 g) | 621.386 | 100,0% | 50.764 | 8,17% |
+| desenvolvimento (treino + CV) | 2019–2023 | + gestação única | 608.625 | 97,9% | 43.470 | 7,14% |
+| desenvolvimento (treino + CV) | 2019–2023 | + mês de início do pré-natal registrado (01–09) | 585.505 | 94,2% | 40.760 | 6,96% |
+| teste temporal (uso único) | 2024 | registros no período (sem duplicatas) | 110.824 | 100,0% | — | — |
+| teste temporal (uso único) | 2024 | + peso plausível (300–6.500 g) | 110.756 | 99,9% | 9.643 | 8,71% |
+| teste temporal (uso único) | 2024 | + gestação única | 108.341 | 97,8% | 8.231 | 7,60% |
+| teste temporal (uso único) | 2024 | + mês de início do pré-natal registrado (01–09) | 104.917 | 94,7% | 7.732 | 7,37% |
 <!-- auditoria:populacao:fim -->
 
 Prevalência nos grupos retirados (desenvolvimento, só peso plausível):
@@ -245,10 +245,10 @@ Prevalência nos grupos retirados (desenvolvimento, só peso plausível):
 <!-- auditoria:excluidos:inicio -->
 | grupo | registros | % do desenvolvimento | baixo peso | % baixo peso |
 | --- | --- | --- | --- | --- |
-| gestação múltipla (GRAVIDEZ 2 ou 3) | 12.209 | 2,0% | 7.250 | 59,38% |
+| gestação múltipla (GRAVIDEZ 2 ou 3) | 12.208 | 2,0% | 7.250 | 59,39% |
 | tipo de gravidez ausente ou ignorado | 553 | 0,1% | 44 | 7,96% |
 | gestação única sem mês de início do pré-natal | 23.120 | 3,7% | 2.710 | 11,72% |
-| população do modelo | 585.522 | 94,2% | 40.761 | 6,96% |
+| população do modelo | 585.505 | 94,2% | 40.760 | 6,96% |
 <!-- auditoria:excluidos:fim -->
 
 **Por que cada grupo sai:**
@@ -273,8 +273,8 @@ Prevalência nos grupos retirados (desenvolvimento, só peso plausível):
 <!-- auditoria:recorte:inicio -->
 | conjunto | anos | registros na população | baixo peso | % baixo peso |
 | --- | --- | --- | --- | --- |
-| desenvolvimento (treino + CV) | 2019–2023 | 585.522 | 40.761 | 6,96% |
-| teste temporal (uso único) | 2024 | 104.919 | 7.732 | 7,37% |
+| desenvolvimento (treino + CV) | 2019–2023 | 585.505 | 40.760 | 6,96% |
+| teste temporal (uso único) | 2024 | 104.917 | 7.732 | 7,37% |
 <!-- auditoria:recorte:fim -->
 
 ## 7. Licença
@@ -308,22 +308,22 @@ publicados.
 <!-- auditoria:subgrupos:inicio -->
 | subgrupo | categoria | registros | % da base | baixo peso | % baixo peso |
 | --- | --- | --- | --- | --- | --- |
-| raça/cor da mãe | parda | 426.214 | 72,8% | 29.535 | 6,93% |
-| raça/cor da mãe | branca | 110.534 | 18,9% | 7.471 | 6,76% |
-| raça/cor da mãe | preta | 34.986 | 6,0% | 2.921 | 8,35% |
+| raça/cor da mãe | parda | 426.204 | 72,8% | 29.534 | 6,93% |
+| raça/cor da mãe | branca | 110.532 | 18,9% | 7.471 | 6,76% |
+| raça/cor da mãe | preta | 34.982 | 6,0% | 2.921 | 8,35% |
 | raça/cor da mãe | ignorada | 6.313 | 1,1% | 318 | 5,04% |
-| raça/cor da mãe | indígena | 5.775 | 1,0% | 394 | 6,82% |
+| raça/cor da mãe | indígena | 5.774 | 1,0% | 394 | 6,82% |
 | raça/cor da mãe | amarela | 1.700 | 0,3% | 122 | 7,18% |
-| idade da mãe | 20–34 anos | 407.501 | 69,6% | 26.024 | 6,39% |
-| idade da mãe | até 19 anos | 92.673 | 15,8% | 7.960 | 8,59% |
-| idade da mãe | 35 anos ou mais | 85.348 | 14,6% | 6.777 | 7,94% |
-| mesorregião de residência | Metropolitana de Recife | 220.622 | 37,7% | 15.702 | 7,12% |
-| mesorregião de residência | Agreste Pernambucano | 156.469 | 26,7% | 10.599 | 6,77% |
-| mesorregião de residência | Mata Pernambucana | 81.850 | 14,0% | 5.249 | 6,41% |
-| mesorregião de residência | Sertão Pernambucano | 74.731 | 12,8% | 5.410 | 7,24% |
-| mesorregião de residência | São Francisco Pernambucano | 51.798 | 8,8% | 3.795 | 7,33% |
+| idade da mãe | 20–34 anos | 407.491 | 69,6% | 26.024 | 6,39% |
+| idade da mãe | até 19 anos | 92.670 | 15,8% | 7.959 | 8,59% |
+| idade da mãe | 35 anos ou mais | 85.344 | 14,6% | 6.777 | 7,94% |
+| mesorregião de residência | Metropolitana de Recife | 220.617 | 37,7% | 15.701 | 7,12% |
+| mesorregião de residência | Agreste Pernambucano | 156.466 | 26,7% | 10.599 | 6,77% |
+| mesorregião de residência | Mata Pernambucana | 81.849 | 14,0% | 5.249 | 6,41% |
+| mesorregião de residência | Sertão Pernambucano | 74.726 | 12,8% | 5.410 | 7,24% |
+| mesorregião de residência | São Francisco Pernambucano | 51.795 | 8,8% | 3.795 | 7,33% |
 | mesorregião de residência | ignorada | 52 | 0,0% | < 10 | — |
-| município de residência | demais municípios | 555.675 | 94,9% | 38.482 | 6,93% |
+| município de residência | demais municípios | 555.658 | 94,9% | 38.481 | 6,93% |
 | município de residência | Petrolina | 29.847 | 5,1% | 2.279 | 7,64% |
 <!-- auditoria:subgrupos:fim -->
 

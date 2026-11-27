@@ -63,8 +63,8 @@ Proposta completa: [`docs/proposta.md`](docs/proposta.md).
 - **Volume:** 1.282.496 registros × 61 colunas (PE, 2015–2024).
 - **População do modelo:** gestações únicas com mês de início do pré-natal
   registrado, que é quem passa pela captação.
-- **Recorte:** desenvolvimento em 2019–2023 (585.522 registros na população) e
-  teste temporal em 2024 (104.919), usado uma única vez no final.
+- **Recorte:** desenvolvimento em 2019–2023 (585.505 registros na população) e
+  teste temporal em 2024 (104.917), usado uma única vez no final.
 - **Alvo:** `baixo_peso = 1` se `PESO < 2500` g (6,96% no desenvolvimento).
 - Auditoria completa, gerada por script, em
   [`docs/dicionario-de-dados.md`](docs/dicionario-de-dados.md).

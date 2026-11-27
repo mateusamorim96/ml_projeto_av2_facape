@@ -24,7 +24,7 @@ from src.data.carregar import carregar_municipios, carregar_sinasc
 from src.data.download import ler_registro
 from src.data.esquema import COLUNAS, POR_NOME, Coluna, origem
 from src.data.populacao import PESO_PLAUSIVEL, etapas_populacao, mascara_populacao, peso_numerico
-from src.data.preparar import IDADE_PLAUSIVEL, INTERNAS
+from src.data.preparar import IDADE_PLAUSIVEL, INTERNAS, remover_duplicatas
 
 DICIONARIO = RAIZ / "docs" / "dicionario-de-dados.md"
 MUNICIPIO_IGNORADO = "260000"
@@ -257,7 +257,7 @@ def tabela_populacao(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     for nome, anos in conjuntos(cfg).items():
         no_periodo = df["ANO"].isin(anos)
         total = int(no_periodo.sum())
-        linhas.append({"conjunto": nome, "anos": rotulo_anos(anos), "etapa": "registros no período",
+        linhas.append({"conjunto": nome, "anos": rotulo_anos(anos), "etapa": "registros no período (sem duplicatas)",
                        "registros": fmt_int(total), "% do período": "100,0%", "baixo peso": "—",
                        "% baixo peso": "—"})
         for etapa, mascara in etapas:
@@ -305,15 +305,17 @@ def tabela_recorte(df: pd.DataFrame, cfg: dict) -> pd.DataFrame:
     return pd.DataFrame(linhas)
 
 
-def resumo_alvo(df: pd.DataFrame, cfg: dict) -> str:
+def resumo_alvo(df: pd.DataFrame, limpo: pd.DataFrame, cfg: dict) -> str:
+    """Periodo auditado sobre os registros brutos; populacao sobre os registros sem duplicatas."""
     limiar = cfg["dados"]["limiar_peso_g"]
     peso = peso_numerico(df)
     plausivel = peso.between(*PESO_PLAUSIVEL)
     positivos = int((plausivel & (peso < limiar)).sum())
     n = int(plausivel.sum())
     anos = sorted(df["ANO"].unique())
-    dev = mascara_populacao(df, cfg) & df["ANO"].isin(cfg["dados"]["anos_desenvolvimento"])
-    n_dev, pos_dev = int(dev.sum()), int((dev & (peso < limiar)).sum())
+    peso_limpo = peso_numerico(limpo)
+    dev = mascara_populacao(limpo, cfg) & limpo["ANO"].isin(cfg["dados"]["anos_desenvolvimento"])
+    n_dev, pos_dev = int(dev.sum()), int((dev & (peso_limpo < limiar)).sum())
     baseline = f"{pos_dev / n_dev:.3f}".replace(".", ",")
     return (f"- **Período auditado:** {anos[0]}–{anos[-1]} ({len(anos)} anos), "
             f"{fmt_int(len(df))} registros brutos e {fmt_int(n)} com peso plausível, dos quais "
@@ -337,19 +339,22 @@ def main(argv: list[str] | None = None) -> int:
     df = carregar_sinasc(cfg, usar_cache=not args.sem_cache)
     municipios = carregar_municipios(cfg)
     print(f"[auditoria] {len(df):,} registros, {df.shape[1] - 1} colunas")
+    # Descricao dos dados brutos usa `df`; tudo que fala da populacao do modelo usa os
+    # registros sem duplicatas, como o pipeline -- assim os numeros sao os mesmos.
+    limpo = remover_duplicatas(df)
 
     tabelas = {
         "arquivos": tabela_arquivos(df, cfg),
         "resumo-anos": tabela_resumo_anos(df, cfg),
         "variaveis": tabela_variaveis(df),
         "qualidade": tabela_qualidade(df, cfg, municipios),
-        "subgrupos": tabela_subgrupos(df, cfg, municipios),
-        "populacao": tabela_populacao(df, cfg),
-        "excluidos": tabela_excluidos(df, cfg),
-        "recorte": tabela_recorte(df, cfg),
+        "subgrupos": tabela_subgrupos(limpo, cfg, municipios),
+        "populacao": tabela_populacao(limpo, cfg),
+        "excluidos": tabela_excluidos(limpo, cfg),
+        "recorte": tabela_recorte(limpo, cfg),
     }
     blocos = {nome: tabela_md(tabela) for nome, tabela in tabelas.items()}
-    blocos["alvo"] = resumo_alvo(df, cfg)
+    blocos["alvo"] = resumo_alvo(df, limpo, cfg)
     atualizar_blocos(DICIONARIO, blocos)  # primeiro: se faltar marcador, nada e gravado
     pasta = RAIZ / cfg["saidas"]["tabelas"]
     pasta.mkdir(parents=True, exist_ok=True)

@@ -51,8 +51,8 @@ hipótese é rejeitada.
 
 - **Fonte:** SINASC, Ministério da Saúde/DATASUS (`DNPE{ano}.dbc`), com dicionário oficial. Licença CC BY-ND
   3.0 do portal; a base não é redistribuída. Análise na E2.
-- **Recorte:** Pernambuco. Desenvolvimento em 2019–2023 (585.522 registros na população) e **teste temporal
-  em 2024** (104.919), usado uma única vez no final.
+- **Recorte:** Pernambuco. Desenvolvimento em 2019–2023 (585.505 registros na população) e **teste temporal
+  em 2024** (104.917), usado uma única vez no final.
 - **LGPD:** a base é pública e anonimizada. Datas, hora, estabelecimento e naturalidade são removidos.
 - **Plano B:** acesso pelo OpenDataSUS se o FTP falhar; tema reserva: hospitalização por dengue (SINAN, ODS 3.3).
 
