@@ -89,12 +89,13 @@ def carregar_desenvolvimento(cfg: dict) -> pd.DataFrame:
 def figura_prevalencia_por_ano(cfg: dict) -> tuple[plt.Figure, pd.DataFrame]:
     """F1: desbalanceamento e tendencia, todos os nascidos vivos x populacao do modelo."""
     from src.data.carregar import carregar_sinasc
-    from src.data.populacao import mascara_populacao, peso_numerico
+    from src.data.populacao import PESO_PLAUSIVEL, mascara_populacao, peso_numerico
+    from src.data.preparar import remover_duplicatas
 
-    bruto = carregar_sinasc(cfg)
+    bruto = remover_duplicatas(carregar_sinasc(cfg))  # mesma limpeza do pipeline
     bruto = bruto[bruto["ANO"] < cfg["dados"]["ano_teste"]]  # 2024 e o teste: fora da EDA
     peso = peso_numerico(bruto)
-    plausivel = peso.between(300, 6500)
+    plausivel = peso.between(*PESO_PLAUSIVEL)
     baixo = (peso < cfg["dados"]["limiar_peso_g"]).fillna(False).astype(int)  # NA so fora do plausivel
     todos = prevalencia(bruto.loc[plausivel, "ANO"], baixo[plausivel])
     populacao = mascara_populacao(bruto, cfg)
