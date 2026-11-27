@@ -1,7 +1,7 @@
 # G01 — Risco de baixo peso ao nascer em Pernambuco (ODS 3.2)
 
 > Projeto AV2 de Machine Learning · FACAPE 2026.2 · Pasta
-> `grupos/grupo-01-baixo-peso-sinasc-pe` · Entrega atual: E2
+> `grupos/grupo-01-baixo-peso-sinasc-pe` · Entrega atual: E3
 
 ## Integrantes
 
@@ -76,22 +76,30 @@ Proposta completa: [`docs/proposta.md`](docs/proposta.md).
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# 2. dados brutos (DATASUS + IBGE) com conferência de SHA-256, e auditoria
-python -m src.data.download  --config configs/base.yaml
+# 2. pipeline: baixa e confere os dados (SHA-256), prepara, faz o split
+#    temporal, gera as figuras da EDA e monta o pré-processamento
+python -m src.pipeline --config configs/base.yaml
+python -m src.pipeline --config configs/base.yaml --etapa dados   # uma etapa só
+
+# 3. auditoria dos dados (reescreve as tabelas do dicionário de dados)
 python -m src.data.auditoria --config configs/base.yaml
 
-# 3. pipeline completo (a partir da E3)
-python -m src.pipeline --config configs/base.yaml
-
-# 4. ou via Docker (ambiente limpo)
+# 4. ou via Docker (ambiente limpo; validado na E6)
 docker build -t grupo-01-baixo-peso-sinasc-pe .
 docker run --rm grupo-01-baixo-peso-sinasc-pe
 ```
 
-- **Tempo estimado de execução:** download cerca de 3 min; auditoria de 4 a 5 min
-  na primeira vez (lê 10 arquivos `.dbc`) e segundos nas seguintes (cache em
-  `data/processed/`). O pipeline completo será medido na E6.
-- **Saídas:** `reports/tables/`, `reports/figures/`, `reports/environment.json`
+- **Etapas do pipeline:** `dados` → `eda` → `features` → `modelos` (E4) →
+  `avaliacao` (E5). As etapas ainda não implementadas aparecem como pendentes,
+  sem interromper a execução.
+- **EDA:** as figuras saem em `reports/figures/figura-eda-*.png`, com a leitura
+  e a decisão de cada uma em
+  [`notebooks/01-eda-baixo-peso.ipynb`](notebooks/01-eda-baixo-peso.ipynb).
+- **Tempo estimado de execução:** na primeira vez, cerca de 3 min de download e
+  de 4 a 5 min de leitura dos 10 arquivos `.dbc`. Depois, menos de 1 min (cache
+  em `data/processed/`).
+- **Saídas:** `data/processed/` (conjuntos de desenvolvimento e teste, fora do
+  Git), `reports/tables/`, `reports/figures/`, `reports/environment.json`
 
 ## 5. Resultados principais
 
@@ -124,10 +132,11 @@ Disponíveis a partir da E4 (modelagem) e da E5 (comparação estatística).
   etária da mãe e mesorregião de residência (IBGE), com destaque para Petrolina
   (entrega E5).
 - **Uso de IA generativa:** Claude Code (Anthropic) foi usado para pesquisar as
-  fontes de dados, escrever os scripts de download e auditoria (`src/data/`) e
-  redigir a proposta, o dicionário de dados e este README. Os números citados
-  são calculados pelos scripts a partir dos arquivos originais do DATASUS; as
-  tabelas do dicionário são reescritas pela auditoria a cada execução.
+  fontes de dados, escrever o código (`src/`), gerar as figuras da EDA e redigir
+  a proposta, o dicionário de dados, as decisões técnicas, o notebook e este
+  README. Os números citados são calculados pelos scripts a partir dos arquivos
+  originais do DATASUS; as tabelas do dicionário são reescritas pela auditoria a
+  cada execução, e o notebook é executado de ponta a ponta.
 
 ---
 

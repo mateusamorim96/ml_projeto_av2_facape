@@ -4,15 +4,15 @@ coluna,tipo,unidade,origem,faixa observada,% nulos,% ignorado,descrição,uso,mo
 `ESCMAE2010`,categorica,—,"DN, bloco III (mãe)","0, 1, 2, 3, 4, 5","0,6%","0,5%","Escolaridade da mãe (última série concluída), nível (códigos: 0 sem escolaridade; 1 fundamental I; 2 fundamental II; 3 médio; 4 superior incompleto; 5 superior completo; 9 ignorado)",atributo,
 `RACACORMAE`,categorica,—,"DN, bloco III (mãe)","1, 2, 3, 4, 5","1,3%",—,Raça/cor da mãe (códigos: 1 branca; 2 preta; 3 amarela; 4 parda; 5 indígena),atributo,também usada na análise por subgrupo (RQ-ÉT-02)
 `ESTCIVMAE`,categorica,—,"DN, bloco III (mãe)","1, 2, 3, 4, 5","0,6%","0,3%",Situação conjugal da mãe (códigos: 1 solteira; 2 casada; 3 viúva; 4 separada; 5 união estável; 9 ignorada),atributo,
-`CODOCUPMAE`,categorica,—,"DN, bloco III (mãe)",1.571 códigos,"4,2%",—,Ocupação da mãe (CBO 2002) (códigos: 6 dígitos CBO),atributo,alta cardinalidade: agrupar pelo grande grupo da CBO na E3
+`CODOCUPMAE`,categorica,—,"DN, bloco III (mãe)",1.571 códigos,"4,2%",—,Ocupação da mãe (CBO 2002) (códigos: 6 dígitos CBO),atributo,vira o grande grupo da CBO; códigos especiais 9999xx ficam como categorias próprias
 `QTDGESTANT`,numerica,gestações,"DN, bloco V (gestação e parto)",0–50,"0,6%","0,0%",Número de gestações anteriores,atributo,
 `QTDPARTNOR`,numerica,partos,"DN, bloco V (gestação e parto)",0–91,"0,7%","0,0%",Número de partos vaginais anteriores,atributo,
 `QTDPARTCES`,numerica,partos,"DN, bloco V (gestação e parto)",0–60,"0,8%","0,0%",Número de cesáreas anteriores,atributo,
 `QTDFILVIVO`,numerica,filhos,"DN, bloco V (gestação e parto)",0–30,"0,6%","0,0%",Número de filhos vivos,atributo,
 `QTDFILMORT`,numerica,perdas,"DN, bloco V (gestação e parto)",0–26,"0,8%","0,0%",Número de perdas fetais e abortos,atributo,
 `PARIDADE`,categorica,—,calculada pelo sistema,"0, 1","0,0%","0,0%","Paridade, calculada pelo sistema a partir do histórico (códigos: 0 nulípara; 1 multípara; 9 ignorado)",atributo,
-`MESPRENAT`,numerica,mês,"DN, bloco V (gestação e parto)",1–9,"1,5%","2,5%",Mês de gestação em que iniciou o pré-natal (códigos: 01 … 09; 99 ignorado),atributo,registros sem o mês ficam fora da população (seção 6)
-`CODMUNRES`,categorica,—,"DN, bloco III (mãe)",186 códigos,"0,0%",—,"Município de residência da mãe (IBGE, 6 dígitos) (códigos: código IBGE sem dígito verificador)",atributo,convertido em mesorregião/região imediata (IBGE) na E3; Petrolina = 261110
+`MESPRENAT`,numerica,mês,"DN, bloco V (gestação e parto)",1–9,"1,5%","2,5%",Mês de gestação em que iniciou o pré-natal (códigos: 01 … 09; 99 ignorado),atributo,"registros sem o mês ficam fora da população (seção 6); entra como categoria (EDA, fig. 4)"
+`CODMUNRES`,categorica,—,"DN, bloco III (mãe)",186 códigos,"0,0%",—,"Município de residência da mãe (IBGE, 6 dígitos) (códigos: código IBGE sem dígito verificador)",atributo,vira mesorregião (IBGE) e indicador de Petrolina (261110)
 `GRAVIDEZ`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 3","0,1%","0,0%",Tipo de gravidez (códigos: 1 única; 2 dupla; 3 tripla ou mais; 9 ignorado),filtro,população = só gestação única (seção 6); constante dentro dela
 `DTNASC`,data,—,"DN, bloco I (recém-nascido)",ddmmaaaa,"0,0%",—,Data do nascimento,descartada,identificador ou data que permite reidentificação; o ano vem do nome do arquivo
 `IDADEPAI`,numerica,anos,"DN, bloco IV (pai)",1–98,"80,0%","0,0%",Idade do pai,descartada,mais de 60% de nulos (ver auditoria)
