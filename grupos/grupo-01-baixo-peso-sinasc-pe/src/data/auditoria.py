@@ -24,11 +24,9 @@ from src.data.carregar import carregar_municipios, carregar_sinasc
 from src.data.download import ler_registro
 from src.data.esquema import COLUNAS, POR_NOME, Coluna, origem
 from src.data.populacao import PESO_PLAUSIVEL, etapas_populacao, mascara_populacao, peso_numerico
+from src.data.preparar import IDADE_PLAUSIVEL, INTERNAS
 
 DICIONARIO = RAIZ / "docs" / "dicionario-de-dados.md"
-INTERNAS = ("CONTADOR", "NUMEROLOTE", "DTCADASTRO", "DTRECEBIM", "DTRECORIGA", "DIFDATA",
-            "VERSAOSIST", "ORIGEM", "STDNEPIDEM", "STDNNOVA", "CODPAISRES")
-IDADE_PLAUSIVEL = (10, 55)    # anos
 MUNICIPIO_IGNORADO = "260000"
 CELULA_MINIMA = 10            # cruzamentos com menos registros nao sao publicados
 

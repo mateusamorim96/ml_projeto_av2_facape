@@ -1,0 +1,14 @@
+atributo,tipo_original,pct_ausente_desenvolvimento,tratamento
+IDADEMAE,numerica,0.0,mediana do treino de cada fold (SimpleImputer)
+ESCMAE2010,categorica,0.75,categoria própria 'ignorado' (SimpleImputer constante)
+RACACORMAE,categorica,1.08,categoria própria 'ignorado' (SimpleImputer constante)
+ESTCIVMAE,categorica,0.85,categoria própria 'ignorado' (SimpleImputer constante)
+CODOCUPMAE,categorica,3.83,categoria própria 'ignorado' (SimpleImputer constante)
+QTDGESTANT,numerica,0.25,categoria própria 'ignorado' (SimpleImputer constante)
+QTDPARTNOR,numerica,0.44,categoria própria 'ignorado' (SimpleImputer constante)
+QTDPARTCES,numerica,0.48,categoria própria 'ignorado' (SimpleImputer constante)
+QTDFILVIVO,numerica,0.51,categoria própria 'ignorado' (SimpleImputer constante)
+QTDFILMORT,numerica,0.65,categoria própria 'ignorado' (SimpleImputer constante)
+PARIDADE,categorica,0.0,categoria própria 'ignorado' (SimpleImputer constante)
+MESPRENAT,numerica,0.0,categoria própria 'ignorado' (SimpleImputer constante)
+CODMUNRES,categorica,0.0,município ignorado (260000) vira mesorregião 'ignorado'

@@ -90,9 +90,12 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--registrar", action="store_true",
                         help="aceita e registra hashes novos ou divergentes")
     args = parser.parse_args(argv)
+    return sincronizar(carregar_config(args.config), anos=args.anos, registrar=args.registrar)
 
-    cfg = carregar_config(args.config)
-    anos = args.anos or list(cfg["dados"]["anos"])
+
+def sincronizar(cfg: dict, anos: list[int] | None = None, registrar: bool = False) -> int:
+    """Garante os arquivos brutos em data/raw/ com o SHA-256 registrado. Retorna 0 se tudo confere."""
+    anos = anos or list(cfg["dados"]["anos"])
     pasta_raw = RAIZ / cfg["dados"]["raw"]
     pasta_raw.mkdir(parents=True, exist_ok=True)
     caminho_registro = RAIZ / cfg["dados"]["fonte"]["hashes"]
@@ -112,7 +115,7 @@ def main(argv: list[str] | None = None) -> int:
         if esperado and esperado["sha256"] == digest:
             print(f"[download] {nome}: sha256 confere ({digest[:12]}...)")
             continue
-        if esperado and not args.registrar:
+        if esperado and not registrar:
             divergentes.append(f"{nome}: esperado {esperado['sha256'][:12]}..., obtido {digest[:12]}...")
             continue
         acao = "atualizado" if esperado else "registrado"
