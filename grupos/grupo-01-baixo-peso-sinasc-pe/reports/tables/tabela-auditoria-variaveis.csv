@@ -1,0 +1,62 @@
+coluna,tipo,unidade,origem,faixa observada,% nulos,% ignorado,descrição,uso,motivo / observação
+`PESO`,numerica,g,"DN, bloco I (recém-nascido)",100–7.000,"0,0%",—,"Peso ao nascer, verificado até a 5ª hora de vida (códigos: 4 dígitos)",alvo,alvo = 1 se PESO < 2500 g
+`IDADEMAE`,numerica,anos,"DN, bloco III (mãe)",10–65,"0,0%","0,0%",Idade da mãe,atributo,
+`ESCMAE2010`,categorica,—,"DN, bloco III (mãe)","0, 1, 2, 3, 4, 5","0,6%","0,5%","Escolaridade da mãe (última série concluída), nível (códigos: 0 sem escolaridade; 1 fundamental I; 2 fundamental II; 3 médio; 4 superior incompleto; 5 superior completo; 9 ignorado)",atributo,
+`RACACORMAE`,categorica,—,"DN, bloco III (mãe)","1, 2, 3, 4, 5","1,3%",—,Raça/cor da mãe (códigos: 1 branca; 2 preta; 3 amarela; 4 parda; 5 indígena),atributo,também usada na análise por subgrupo (RQ-ÉT-02)
+`ESTCIVMAE`,categorica,—,"DN, bloco III (mãe)","1, 2, 3, 4, 5","0,6%","0,3%",Situação conjugal da mãe (códigos: 1 solteira; 2 casada; 3 viúva; 4 separada; 5 união estável; 9 ignorada),atributo,
+`CODOCUPMAE`,categorica,—,"DN, bloco III (mãe)",1.571 códigos,"4,2%",—,Ocupação da mãe (CBO 2002) (códigos: 6 dígitos CBO),atributo,vira o grande grupo da CBO; códigos especiais 9999xx ficam como categorias próprias
+`QTDGESTANT`,numerica,gestações,"DN, bloco V (gestação e parto)",0–50,"0,6%","0,0%",Número de gestações anteriores,atributo,
+`QTDPARTNOR`,numerica,partos,"DN, bloco V (gestação e parto)",0–91,"0,7%","0,0%",Número de partos vaginais anteriores,atributo,
+`QTDPARTCES`,numerica,partos,"DN, bloco V (gestação e parto)",0–60,"0,8%","0,0%",Número de cesáreas anteriores,atributo,
+`QTDFILVIVO`,numerica,filhos,"DN, bloco V (gestação e parto)",0–30,"0,6%","0,0%",Número de filhos vivos,atributo,
+`QTDFILMORT`,numerica,perdas,"DN, bloco V (gestação e parto)",0–26,"0,8%","0,0%",Número de perdas fetais e abortos,atributo,
+`PARIDADE`,categorica,—,calculada pelo sistema,"0, 1","0,0%","0,0%","Paridade, calculada pelo sistema a partir do histórico (códigos: 0 nulípara; 1 multípara; 9 ignorado)",atributo,
+`MESPRENAT`,numerica,mês,"DN, bloco V (gestação e parto)",1–9,"1,5%","2,5%",Mês de gestação em que iniciou o pré-natal (códigos: 01 … 09; 99 ignorado),atributo,"registros sem o mês ficam fora da população (seção 6); entra como categoria (EDA, fig. 4)"
+`CODMUNRES`,categorica,—,"DN, bloco III (mãe)",186 códigos,"0,0%",—,"Município de residência da mãe (IBGE, 6 dígitos) (códigos: código IBGE sem dígito verificador)",atributo,vira mesorregião (IBGE) e indicador de Petrolina (261110)
+`GRAVIDEZ`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 3","0,1%","0,0%",Tipo de gravidez (códigos: 1 única; 2 dupla; 3 tripla ou mais; 9 ignorado),filtro,população = só gestação única (seção 6); constante dentro dela
+`DTNASC`,data,—,"DN, bloco I (recém-nascido)",ddmmaaaa,"0,0%",—,Data do nascimento,descartada,identificador ou data que permite reidentificação; o ano vem do nome do arquivo
+`IDADEPAI`,numerica,anos,"DN, bloco IV (pai)",1–98,"80,0%","0,0%",Idade do pai,descartada,mais de 60% de nulos (ver auditoria)
+`CODPAISRES`,categorica,—,demais campos do arquivo,1,"21,9%",—,País de residência,descartada,existe só em 2015 e 2017; o arquivo já é de residentes em PE
+`SEMAGESTAC`,numerica,semanas,"DN, bloco V (gestação e parto)",19–45,"1,9%",—,Semanas de gestação,descartada,vazamento: só é conhecida no parto ou depois dele
+`GESTACAO`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 3, 4, 5, 6, 9","1,9%",—,"Semanas de gestação, agrupado (DN antiga)",descartada,vazamento: só é conhecida no parto ou depois dele
+`TPMETESTIM`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 8, 9","1,9%",—,Método para estimar a idade gestacional,descartada,vazamento: só é conhecida no parto ou depois dele
+`PARTO`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 9","0,1%",—,Tipo de parto,descartada,vazamento: só é conhecida no parto ou depois dele
+`STTRABPART`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 9","0,7%",—,Trabalho de parto induzido,descartada,vazamento: só é conhecida no parto ou depois dele
+`STCESPARTO`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 3, 9","6,5%",—,Cesárea antes do trabalho de parto,descartada,vazamento: só é conhecida no parto ou depois dele
+`TPAPRESENT`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 3, 9","0,4%",—,Apresentação do recém-nascido,descartada,vazamento: só é conhecida no parto ou depois dele
+`TPROBSON`,categorica,—,calculada pelo sistema,"01, 02, 03, 04, 05, 06, 07, 08, 09, 10, 11","0,0%",—,Grupo de Robson (gerado a partir de dados do parto),descartada,vazamento: só é conhecida no parto ou depois dele
+`TPNASCASSI`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 3, 4, 9","0,3%",—,Profissional que assistiu o parto,descartada,vazamento: só é conhecida no parto ou depois dele
+`LOCNASC`,categorica,—,"DN, bloco II (local do parto)","1, 2, 3, 4, 9","0,0%",—,Local de ocorrência do nascimento,descartada,vazamento: só é conhecida no parto ou depois dele
+`CODMUNNASC`,categorica,—,"DN, bloco II (local do parto)",461 códigos,"0,0%",—,Município de ocorrência do nascimento,descartada,vazamento: só é conhecida no parto ou depois dele
+`APGAR1`,numerica,—,"DN, bloco I (recém-nascido)",0–99,"0,9%",—,Índice de Apgar no 1º minuto,descartada,vazamento: só é conhecida no parto ou depois dele
+`APGAR5`,numerica,—,"DN, bloco I (recém-nascido)",0–99,"0,8%",—,Índice de Apgar no 5º minuto,descartada,vazamento: só é conhecida no parto ou depois dele
+`IDANOMAL`,categorica,—,"DN, bloco I (recém-nascido)","1, 2, 9","0,2%",—,Anomalia congênita detectada no nascimento,descartada,vazamento: só é conhecida no parto ou depois dele
+`CODANOMAL`,texto,—,"DN, bloco VI (anomalia)",2.138 códigos,"98,9%",—,Anomalias congênitas (CID-10),descartada,vazamento: só é conhecida no parto ou depois dele
+`HORANASC`,texto,—,"DN, bloco I (recém-nascido)",1.440 códigos,"0,1%",—,Hora do nascimento,descartada,vazamento: só é conhecida no parto ou depois dele
+`SEXO`,categorica,—,"DN, bloco I (recém-nascido)","0, 1, 2","0,0%",—,"Sexo do recém-nascido (códigos: os arquivos usam 0, 1 e 2; o dicionário oficial cita M, F e I)",descartada,"característica do recém-nascido, desconhecida na captação"
+`RACACOR`,categorica,—,"DN, bloco I (recém-nascido)","1, 2, 3, 4, 5","1,2%",—,Raça/cor do recém-nascido,descartada,"característica do recém-nascido, desconhecida na captação; usa-se RACACORMAE"
+`CONSPRENAT`,numerica,—,"DN, bloco V (gestação e parto)",0–99,"1,1%",—,Número de consultas de pré-natal,descartada,vazamento: depende da duração da gestação
+`CONSULTAS`,categorica,—,"DN, bloco V (gestação e parto)","1, 2, 3, 4, 9","0,1%",—,"Consultas de pré-natal, agrupado (DN antiga)",descartada,vazamento: depende da duração da gestação
+`KOTELCHUCK`,categorica,—,calculada pelo sistema,"1, 2, 3, 4, 5, 9","0,0%",—,Índice de adequação do pré-natal (usa nº de consultas),descartada,vazamento: depende da duração da gestação
+`DTNASCMAE`,data,—,"DN, bloco III (mãe)",ddmmaaaa,"0,3%",—,Data de nascimento da mãe,descartada,identificador ou data que permite reidentificação
+`DTULTMENST`,data,—,"DN, bloco V (gestação e parto)",ddmmaaaa,"41,8%",—,Data da última menstruação,descartada,identificador ou data que permite reidentificação
+`CODESTAB`,categorica,—,"DN, bloco II (local do parto)",844 códigos,"0,5%",—,Estabelecimento de nascimento (CNES),descartada,identificador ou data que permite reidentificação; também é dado do parto
+`NUMEROLOTE`,texto,—,interna do sistema,719 códigos,"0,0%",—,Número do lote,descartada,"campo interno do sistema, sem significado clínico"
+`CONTADOR`,texto,—,"arquivo DATASUS, ausente do dicionário oficial",618.822 códigos,"0,0%",—,Contador sequencial do registro (minúsculo em 2015 e 2017),descartada,"campo interno do sistema, sem significado clínico"
+`DTDECLARAC`,data,—,"DN, bloco VII (preenchimento)",ddmmaaaa,"0,3%",—,Data de preenchimento da DN,descartada,"dado do preenchimento da DN, registrado depois do parto"
+`DTCADASTRO`,data,—,interna do sistema,ddmmaaaa,"0,0%",—,Data de cadastro no sistema,descartada,"campo interno do sistema, sem significado clínico"
+`DTRECEBIM`,data,—,interna do sistema,ddmmaaaa,"0,0%",—,Data do último recebimento do lote,descartada,"campo interno do sistema, sem significado clínico"
+`DTRECORIGA`,data,—,interna do sistema,sem dado,"100,0%",—,Data de recebimento original,descartada,"campo interno do sistema, sem significado clínico"
+`DIFDATA`,numerica,—,interna do sistema,0–804,"0,0%",—,Diferença entre datas do sistema,descartada,"campo interno do sistema, sem significado clínico"
+`VERSAOSIST`,texto,—,interna do sistema,"2.2.00, 2.2.03, 2.2.08, 3.2.00, 3.2.01, 3.2.02, 3.2.50","0,0%",—,Versão do sistema,descartada,"campo interno do sistema, sem significado clínico"
+`ORIGEM`,categorica,—,interna do sistema,"1, 2","0,0%",—,Banco de dados de origem,descartada,"campo interno do sistema, sem significado clínico"
+`STDNEPIDEM`,categorica,—,interna do sistema,"0, 1","0,0%",—,Status de DN epidemiológica,descartada,"campo interno do sistema, sem significado clínico"
+`STDNNOVA`,categorica,—,interna do sistema,"0, 1","0,0%",—,Status de DN nova,descartada,"campo interno do sistema, sem significado clínico"
+`TPFUNCRESP`,categorica,—,"DN, bloco VII (preenchimento)","1, 2, 3, 4, 5","3,9%",—,Função de quem preencheu a DN,descartada,"dado do preenchimento da DN, registrado depois do parto"
+`TPDOCRESP`,categorica,—,"DN, bloco VII (preenchimento)","0, 1, 2, 3, 4, 5","0,2%",—,Documento de quem preencheu a DN,descartada,"dado do preenchimento da DN, registrado depois do parto"
+`ESCMAE`,categorica,—,"DN, bloco III (mãe)","1, 2, 3, 4, 5, 9","0,5%",—,Escolaridade em anos de estudo (DN antiga),descartada,"codificação da DN antiga, substituída por campo mais detalhado"
+`ESCMAEAGR1`,categorica,—,calculada pelo sistema,13 códigos,"0,6%",—,Escolaridade 2010 agregada,descartada,redundante com ESCMAE2010
+`SERIESCMAE`,numerica,—,"DN, bloco III (mãe)",1–8,"29,7%",—,Última série concluída,descartada,redundante com ESCMAE2010
+`NATURALMAE`,categorica,—,"DN, bloco III (mãe)",27 códigos,"0,4%",—,"Naturalidade da mãe (país, se estrangeira)",descartada,baixo valor preditivo esperado e aumenta risco de reidentificação
+`CODMUNNATU`,categorica,—,demais campos do arquivo,3.056 códigos,"0,4%",—,Município de naturalidade da mãe,descartada,baixo valor preditivo esperado e aumenta risco de reidentificação
+`CODUFNATU`,categorica,—,demais campos do arquivo,27 códigos,"0,4%",—,UF de naturalidade da mãe,descartada,baixo valor preditivo esperado e aumenta risco de reidentificação

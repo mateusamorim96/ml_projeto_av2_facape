@@ -1,0 +1,26 @@
+bloco,categoria,registros,baixo_peso,pct_baixo_peso,ic95_inf,ic95_sup
+escolaridade,sem escolaridade,2409,228,9.465,8.359,10.699
+escolaridade,fundamental I,28766,2373,8.249,7.937,8.573
+escolaridade,fundamental II,144480,10863,7.519,7.384,7.656
+escolaridade,médio,311458,20914,6.715,6.628,6.803
+escolaridade,superior incompleto,24083,1643,6.822,6.511,7.148
+escolaridade,superior completo,69945,4503,6.438,6.258,6.622
+escolaridade,ignorada,4364,236,5.408,4.775,6.119
+raça/cor,ignorada,6313,318,5.037,4.525,5.605
+raça/cor,branca,110532,7471,6.759,6.613,6.909
+raça/cor,indígena,5774,394,6.824,6.202,7.503
+raça/cor,parda,426204,29534,6.93,6.854,7.006
+raça/cor,amarela,1700,122,7.176,6.044,8.502
+raça/cor,preta,34982,2921,8.35,8.065,8.644
+ocupação (CBO),ignorada,22430,1157,5.158,4.876,5.455
+ocupação (CBO),grupo-6,155130,8718,5.62,5.506,5.736
+ocupação (CBO),grupo-3,32427,2073,6.393,6.132,6.664
+ocupação (CBO),especial-999994,1453,94,6.469,5.316,7.852
+ocupação (CBO),grupo-2,42571,2807,6.594,6.362,6.833
+ocupação (CBO),grupo-1,7830,521,6.654,6.123,7.227
+ocupação (CBO),grupo-4,26524,1843,6.948,6.649,7.261
+ocupação (CBO),grupo-7,8848,642,7.256,6.734,7.815
+ocupação (CBO),especial-999992,203264,15565,7.658,7.543,7.774
+ocupação (CBO),grupo-5,44697,3519,7.873,7.627,8.126
+ocupação (CBO),grupo-8,1485,126,8.485,7.172,10.011
+ocupação (CBO),especial-999991,37758,3621,9.59,9.297,9.891

@@ -1,0 +1,10 @@
+item verificado,registros,% do total,ação (E3)
+"duplicatas (todas as colunas, exceto as internas do sistema)",33,"0,00%",remover a cópia (iguais até em hora e peso do nascimento: DN digitada em duplicidade)
+`PESO` ausente ou não numérico,99,"0,01%",excluir (alvo indefinido)
+`PESO` fora de 300–6500 g,457,"0,04%",excluir (provável erro de digitação)
+`IDADEMAE` ausente ou ignorada (99),4,"0,00%",imputar dentro do pipeline
+`IDADEMAE` fora de 10–55 anos,29,"0,00%",tratar como ausente
+histórico obstétrico (`QTD*`) com valor > 20,125,"0,01%",tratar como ausente
+`MESPRENAT` com código fora de 01–09/99,0,"0,00%",tratar como ausente
+`PARIDADE` = nulípara com filhos vivos > 0,0,"0,00%",manter; registrar como inconsistência de preenchimento
+`CODMUNRES` = 260000 (município ignorado) ou sem par no IBGE,138,"0,01%",região = 'ignorada'
