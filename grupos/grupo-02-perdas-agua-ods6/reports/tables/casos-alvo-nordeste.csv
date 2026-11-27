@@ -1,0 +1,77 @@
+cod_IBGE,Município,UF,RM/RIDE,alvo_t,alvo_t1,variacao_pp,extremo,salto
+2703304,Inhapi,AL,,26.17,76.64,50.47,False,True
+2706208,Palestina,AL,,38.8,77.04,38.24,False,True
+2706422,Pariconha,AL,,58.06,24.28,-33.78,False,True
+2708907,Satuba,AL,RM de Maceió (AL),87.26,44.82,-42.44,False,True
+2708303,São José da Laje,AL,,89.32,31.96,-57.36,False,True
+2709152,Teotônio Vilela,AL,,80.36,96.9,16.54,True,False
+2709202,Traipu,AL,RM do Agreste (AL),97.43,69.74,-27.69,True,False
+2700102,Água Branca,AL,,5.09,83.29,78.2,False,True
+2907202,Casa Nova,BA,RAIDE do Polo Petrolina/PE e Juazeiro/BA,6.99,68.07,61.08,False,True
+2920502,Maracás,BA,,0.21,7.05,6.84,True,False
+2927804,Santa Cruz da Vitória,BA,,19.48,58.39,38.91,False,True
+2930006,Sebastião Laranjeiras,BA,,19.43,53.07,33.64,False,True
+2932606,Urandi,BA,,4.53,70.13,65.6,False,True
+2300150,Acarape,CE,,18.06,54.39,36.33,False,True
+2301851,Banabuiú,CE,,62.49,25.93,-36.56,False,True
+2303204,Caririaçu,CE,RM do Cariri (CE),85.65,96.45,10.8,True,False
+2305266,Ibaretama,CE,,27.48,60.74,33.26,False,True
+2306306,Itapajé,CE,,51.25,18.52,-32.73,False,True
+2308351,Milhã,CE,,69.48,31.48,-38.0,False,True
+2309300,Nova Russas,CE,,22.23,91.1,68.87,False,True
+2311405,Quixeramobim,CE,,11.18,45.44,34.26,False,True
+2312502,São João do Jaguaribe,CE,,17.87,75.3,57.43,False,True
+2100402,Altamira do Maranhão,MA,,43.44,87.35,43.91,False,True
+2101970,Boa Vista do Gurupi,MA,,36.15,91.11,54.96,False,True
+2102374,Cachoeira Grande,MA,RM da Grande São Luís (MA),42.5,89.05,46.55,False,True
+2102556,Campestre do Maranhão,MA,RM do Sudoeste Maranhense (MA),59.77,19.19,-40.58,False,True
+2103802,Dom Pedro,MA,,79.76,6.74,-73.02,False,True
+2105708,Lago da Pedra,MA,,86.9,29.87,-57.03,False,True
+2106300,Magalhães de Almeida,MA,,76.23,33.19,-43.04,False,True
+2106326,Maracaçumé,MA,,18.85,94.57,75.72,False,True
+2106755,Miranda do Norte,MA,,87.48,98.79,11.31,True,False
+2108058,Paulino Neves,MA,,70.59,39.63,-30.96,False,True
+2109007,Porto Franco,MA,RM do Sudoeste Maranhense (MA),30.9,99.73,68.83,True,True
+2111722,Satubinha,MA,,97.83,76.1,-21.73,True,False
+2111250,São José dos Basílios,MA,,49.02,2.86,-46.16,False,True
+2112506,Tutóia,MA,,59.61,95.27,35.66,True,True
+2100154,Água Doce do Maranhão,MA,,15.24,95.96,80.72,True,True
+2500908,Arara,PB,RM de Guarabira (PB),25.49,59.06,33.57,False,True
+2501302,Aroeiras,PB,RM de Campina Grande (PB),0.0,73.33,73.33,True,True
+2501575,Barra de Santana,PB,RM de Campina Grande (PB),0.0,81.54,81.54,True,True
+2501807,Bayeux,PB,RM de João Pessoa (PB),34.51,71.15,36.64,False,True
+2502052,Bernardino Batista,PB,RM de Cajazeiras (PB),0.0,32.11,32.11,True,True
+2503555,Cacimbas,PB,RM de Patos (PB),0.0,0.0,0.0,True,False
+2505402,Desterro,PB,RM de Patos (PB),0.0,0.0,0.0,True,False
+2506202,Frei Martinho,PB,RM de Barra de Santa Rosa (PB),1.77,51.85,50.08,False,True
+2506905,Itabaiana,PB,RM de Itabaiana (PB),35.61,69.43,33.82,False,True
+2507903,Juripiranga,PB,RM de Itabaiana (PB),49.18,81.98,32.8,False,True
+2508604,Lucena,PB,RM de João Pessoa (PB),44.89,82.23,37.34,False,True
+2508901,Mamanguape,PB,RM do Vale do Mamanguape (PB),33.38,67.71,34.33,False,True
+2509057,Marcação,PB,RM do Vale do Mamanguape (PB),74.1,99.34,25.24,True,False
+2509156,Marizópolis,PB,RM de Sousa (PB),2.9,55.56,52.66,False,True
+2510659,Parari,PB,,14.7,99.33,84.63,True,True
+2512036,Poço Dantas,PB,RM de Cajazeiras (PB),16.26,48.06,31.8,False,True
+2512705,Remígio,PB,RM de Esperança (PB),53.76,19.69,-34.07,False,True
+2512804,Riacho dos Cavalos,PB,,0.0,100.0,100.0,True,True
+2513851,Santo André,PB,,11.48,99.97,88.49,True,True
+2516706,Teixeira,PB,RM de Patos (PB),23.63,67.61,43.98,False,True
+2604205,Catende,PE,,40.81,10.7,-30.11,False,True
+2611200,Poção,PE,,4.68,48.78,44.1,False,True
+2614709,Tacaimbó,PE,,4.8,46.72,41.92,False,True
+2615409,Toritama,PE,,49.54,15.26,-34.28,False,True
+2616183,Vertente do Lério,PE,,12.71,58.46,45.75,False,True
+2201945,Boqueirão do Piauí,PI,,10.0,70.0,60.0,False,True
+2202208,Campo Maior,PI,,62.27,32.08,-30.19,False,True
+2400208,Açu,RN,,66.72,27.38,-39.34,False,True
+2403608,Extremoz,RN,RM de Natal (RN),26.77,0.05,-26.72,True,False
+2405603,Jardim de Piranhas,RN,,56.45,10.32,-46.13,False,True
+2406106,Jucurutu,RN,,36.22,5.97,-30.25,False,True
+2408201,Nísia Floresta,RN,RM de Natal (RN),60.98,9.08,-51.9,False,True
+2409902,Pendências,RN,,68.35,18.58,-49.77,False,True
+2410405,Pureza,RN,,58.97,4.61,-54.36,False,True
+2410603,Rafael Godeiro,RN,,41.44,5.98,-35.46,False,True
+2411205,Santa Cruz,RN,,8.19,0.48,-7.71,True,False
+2413409,Serra Negra do Norte,RN,,7.52,41.24,33.72,False,True
+2414159,Tenente Laurentino Cruz,RN,,20.08,55.22,35.14,False,True
+2801504,Carmópolis,SE,,6.18,85.13,78.95,False,True

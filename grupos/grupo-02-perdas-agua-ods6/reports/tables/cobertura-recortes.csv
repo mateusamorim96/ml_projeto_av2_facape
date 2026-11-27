@@ -1,0 +1,7 @@
+recorte,pares_validos,alvo_t1_media,alvo_t1_desvio,alvo_t1_min,alvo_t1_max,variacao_abs_media_t_t1,preditores_candidatos,linhas_por_preditor
+Brasil,4575,33.17,18.25,0.0,100.0,8.1,50,91.5
+Nordeste,1458,39.93,20.42,0.0,100.0,8.23,52,28.0
+PE+BA,572,28.88,13.55,3.31,86.11,5.88,52,11.0
+PE,176,33.71,17.12,3.31,86.11,8.09,53,3.3
+BA,396,26.74,10.98,4.79,71.4,4.9,52,7.6
+RIDE Petrolina-Juazeiro,8,45.29,15.0,27.34,68.07,13.74,52,0.2

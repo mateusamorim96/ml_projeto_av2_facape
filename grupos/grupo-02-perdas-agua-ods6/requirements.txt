@@ -1,0 +1,17 @@
+# G02 — dependências do projeto
+# REGRA: toda linha com versão fixa (==). A CI rejeita requirements sem pin.
+# Versões testadas em Python 3.11 (imagem Docker) e 3.14 (máquina local).
+numpy==2.3.5
+pandas==2.3.3
+scipy==1.16.3
+scikit-learn==1.7.2
+matplotlib==3.10.7
+seaborn==0.13.2
+pyyaml==6.0.3
+joblib==1.5.2
+# leitura das planilhas .xlsx do SINISA
+openpyxl==3.1.5
+# execução reprodutível do notebook de EDA (make eda)
+nbformat==5.10.4
+nbclient==0.10.2
+ipykernel==7.1.0

@@ -1,0 +1,10 @@
+conjunto,limite_pct,municipios,acima_do_limite,proporcao_acima_pct
+base,30.0,1458,933,64.0
+base,40.0,1458,624,42.8
+base,50.0,1458,442,30.3
+treino,30.0,1166,749,64.2
+treino,40.0,1166,501,43.0
+treino,50.0,1166,356,30.5
+teste,30.0,292,184,63.0
+teste,40.0,292,123,42.1
+teste,50.0,292,86,29.5

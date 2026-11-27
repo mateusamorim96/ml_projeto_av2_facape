@@ -1,0 +1,4 @@
+conjunto,municipios,alvo_t1_media,alvo_t1_desvio,alvo_t1_mediana,pe_ba,ride_petrolina_juazeiro,uf_AL,uf_BA,uf_CE,uf_MA,uf_PB,uf_PE,uf_PI,uf_RN,uf_SE
+base,1458,39.93,20.42,36.13,572,8,93,396,182,163,197,176,17,159,75
+treino,1166,40.01,20.56,36.33,458,6,77,320,146,133,154,138,12,128,58
+teste,292,39.6,19.91,35.26,114,2,16,76,36,30,43,38,5,31,17

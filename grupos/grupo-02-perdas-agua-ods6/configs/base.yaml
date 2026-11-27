@@ -1,0 +1,73 @@
+# Configuração base do pipeline — G02
+# Todos os caminhos são relativos à raiz da pasta do grupo.
+
+project:
+  grupo: G02
+  nome: perdas-agua-ods6
+  ods: 6
+  meta: "6.4"
+  seed: 42
+
+dados:
+  raw: data/raw/            # ignorado pelo Git (ver docs/dicionario-de-dados.md, seção 7)
+  processed: data/processed/
+  # SINISA, módulo Água, pasta "Água - Base Municipal" de cada ZIP oficial
+  arquivo_t: "SINISA_AGUA_Indicadores_Base Municipal_2023.xlsx"
+  abas_t: ["Atendimento", "Estruturais e Operacionais", "Qualidade",
+           "Administrativo e Financeiro"]
+  arquivo_t1: "SINISA_AGUA_Indicadores_Base Municipal_2024_Retificação.xlsx"
+  abas_t1: ["Indicadores de Gestão"]
+  sha256:                   # conferido na carga; mesmo valor da auditoria E2
+    "SINISA_AGUA_Indicadores_Base Municipal_2023.xlsx": 39AD4D8B7433629F08A1FBCF7ADB1CD34D2966D5365EEE654F59145FDCD6FE64
+    "SINISA_AGUA_Indicadores_Base Municipal_2024_Retificação.xlsx": 262F74F515B6225B7C9C122576159AB45576AE15628AE67612D7CEE6C333623D
+  chave: cod_IBGE
+  alvo: IAG2013             # perdas totais na distribuição (%), 2024 = alvo
+  faixa_alvo: [0, 100]
+  recorte_macrorregiao: Nordeste
+  subgrupos:
+    ride_petrolina_juazeiro: "RAIDE do Polo Petrolina/PE e Juazeiro/BA"
+    ufs_pe_ba: ["PE", "BA"]
+  max_ausentes_preditor: 0.20   # medido só no treino
+  coluna_tempo: null            # uma única transição 2023 -> 2024; split por município
+  proporcao_teste: 0.2
+  estratificar: true            # por quintis do alvo (regressão)
+  n_faixas_estratificacao: 5
+
+preprocessamento:
+  # justificativas em docs/decisoes-tecnicas.md, seção 4
+  recorte_percentis: [1, 99]       # winsorização com limites do treino
+  imputacao_numerica: mediana      # mediana | media | constante
+  indicador_ausencia: true         # "Não Calc." pode carregar informação
+  escalonamento: standard          # standard | none
+
+diagnostico:
+  limites_alerta_pct: [30, 40, 50] # candidatos; o limite oficial sai da E4/E5
+
+validacao:
+  esquema: repeated-k-fold         # regressão: KFold repetido sobre o treino
+  n_splits: 5
+  n_repeats: 10
+  metrica_principal: mae           # pontos percentuais
+  metrica_secundaria: rmse
+
+# Seções abaixo são definidas e implementadas na E4/E5.
+modelos:
+  baseline:
+    tipo: persistencia             # repete IAG2013 de 2023 (pergunta da E1)
+    parametros: {}
+
+busca:
+  metodo: grid
+  cv_interna: 3
+  scoring: neg_mean_absolute_error
+
+saidas:
+  tabelas: reports/tables/
+  figuras: reports/figures/
+  ambiente: reports/environment.json
+  runs: experiments/runs.csv
+
+teste_estatistico:
+  metodo: null                     # definido na E5
+  alpha: 0.05
+  correcao: null                   # definido na E5
