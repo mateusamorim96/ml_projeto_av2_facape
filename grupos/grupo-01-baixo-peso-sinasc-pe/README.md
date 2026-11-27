@@ -95,9 +95,9 @@ docker run --rm grupo-01-baixo-peso-sinasc-pe
 - **EDA:** as figuras saem em `reports/figures/figura-eda-*.png`, com a leitura
   e a decisão de cada uma em
   [`notebooks/01-eda-baixo-peso.ipynb`](notebooks/01-eda-baixo-peso.ipynb).
-- **Tempo estimado de execução:** cerca de 5 min na primeira vez (medido em clone
-  limpo: 4 min 44 s, com download e leitura dos 10 arquivos `.dbc`). Depois,
-  menos de 1 min (cache em `data/processed/`).
+- **Tempo estimado de execução:** de 5 a 6 min na primeira vez, com download e
+  leitura dos 10 arquivos `.dbc` (medido em clone limpo; varia com a velocidade
+  do FTP do DATASUS). Depois, menos de 1 min (cache em `data/processed/`).
 - **Saídas:** `data/processed/` (conjuntos de desenvolvimento e teste, fora do
   Git), `reports/tables/`, `reports/figures/`, `reports/environment.json`
 
